@@ -1,4 +1,7 @@
-package Spreadsheet;
+package Spreadsheet;public class UI {
+    public UI(){}
 
-public class UI {
+    public Cmd askForCmd(){}
+
+    private void readCmd(string Command){} //Is it void?
 }

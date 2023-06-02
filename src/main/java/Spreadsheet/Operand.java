@@ -1,4 +1,2 @@
-package Spreadsheet;
-
-public interface Operand {
+package Spreadsheet;public interface Operand {
 }
