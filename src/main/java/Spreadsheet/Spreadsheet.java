@@ -6,16 +6,16 @@ package Spreadsheet;public class Spreadsheet {
 
     public void updateAllCells(){}
 
-    private int GetMaxRow(){}
+    //private int GetMaxRow(){}
 
-    private int GetMaxColumn(){}
+    //private int GetMaxColumn(){}
 
-    private boolean isEmpty(int row, int col){}
+    //private boolean isEmpty(int row, int col){}
     public void spreadsheetToS2V(){}
 
     public void deleteCell(String cellID){}
 
-    public Content getContent(Coordinate coordinate){}
+    //public Content getContent(Coordinate coordinate){}
 
 
 

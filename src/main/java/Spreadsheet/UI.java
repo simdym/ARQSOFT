@@ -1,7 +1,7 @@
 package Spreadsheet;public class UI {
     public UI(){}
 
-    public Cmd askForCmd(){}
+    //public Cmd askForCmd(){}
 
-    private void readCmd(string Command){} //Is it void?
+    private void readCmd(String Command){} //Is it void?
 }
