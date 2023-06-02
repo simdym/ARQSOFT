@@ -1,2 +1,4 @@
-package Spreadsheet;public class FileManager {
+package Spreadsheet;
+
+public class FileManager {
 }

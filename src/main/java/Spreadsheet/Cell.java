@@ -1,2 +1,5 @@
-package Spreadsheet;public class Cell {
+package Spreadsheet;
+
+public class Cell {
+
 }

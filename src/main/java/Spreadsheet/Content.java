@@ -1,2 +1,4 @@
-package Spreadsheet;public class Content {
+package Spreadsheet;
+
+public class Content {
 }

@@ -1,2 +1,4 @@
-package Spreadsheet;public class Operator {
+package Spreadsheet;
+
+public class Operator {
 }

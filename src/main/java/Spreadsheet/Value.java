@@ -1,2 +1,4 @@
-package Spreadsheet;public interface Value {
+package Spreadsheet;
+
+public interface Value {
 }

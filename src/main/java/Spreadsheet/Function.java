@@ -1,2 +1,4 @@
-package Spreadsheet;public class Function {
+package Spreadsheet;
+
+public class Function {
 }

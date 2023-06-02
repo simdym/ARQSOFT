@@ -1,2 +1,4 @@
-package Spreadsheet;public class TextValue {
+package Spreadsheet;
+
+public class TextValue {
 }

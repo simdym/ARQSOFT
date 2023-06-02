@@ -1,2 +1,4 @@
-package Spreadsheet;public class PostFixGenerator {
+package Spreadsheet;
+
+public class PostFixGenerator {
 }

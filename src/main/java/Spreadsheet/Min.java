@@ -1,2 +1,4 @@
-package Spreadsheet;public class Min {
+package Spreadsheet;
+
+public class Min {
 }

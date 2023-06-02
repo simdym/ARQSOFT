@@ -1,2 +1,4 @@
-package Spreadsheet;public class Cmd {
+package Spreadsheet;
+
+public class Cmd {
 }

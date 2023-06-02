@@ -1,2 +1,5 @@
-package Spreadsheet;public class Token {
+package Spreadsheet;
+
+public class Token {
+
 }

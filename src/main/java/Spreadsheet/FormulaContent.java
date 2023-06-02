@@ -1,2 +1,4 @@
-package Spreadsheet;public class FormulaContent {
+package Spreadsheet;
+
+public class FormulaContent {
 }

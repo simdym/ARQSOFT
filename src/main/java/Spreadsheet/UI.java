@@ -1,2 +1,4 @@
-package Spreadsheet;public class UI {
+package Spreadsheet;
+
+public class UI {
 }

@@ -1,2 +1,4 @@
-package Spreadsheet;public class PostFixEvaluator {
+package Spreadsheet;
+
+public class PostFixEvaluator {
 }

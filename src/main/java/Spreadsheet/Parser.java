@@ -1,2 +1,4 @@
-package Spreadsheet;public class Parser {
+package Spreadsheet;
+
+public class Parser {
 }

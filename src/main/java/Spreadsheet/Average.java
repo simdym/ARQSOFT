@@ -1,2 +1,4 @@
-package Spreadsheet;public class Average {
+package Spreadsheet;
+
+public class Average {
 }

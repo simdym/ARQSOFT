@@ -1,2 +1,4 @@
-package Spreadsheet;public interface Argument {
+package Spreadsheet;
+
+public interface Argument {
 }

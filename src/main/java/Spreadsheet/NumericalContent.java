@@ -1,2 +1,4 @@
-package Spreadsheet;public class NumericalContent {
+package Spreadsheet;
+
+public class NumericalContent {
 }

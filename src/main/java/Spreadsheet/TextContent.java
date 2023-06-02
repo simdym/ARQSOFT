@@ -1,2 +1,9 @@
-package Spreadsheet;public class TextContent {
+package Spreadsheet;
+
+public class TextContent {
+    /**
+     *
+     *
+     *
+     */
 }

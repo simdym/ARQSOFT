@@ -1,2 +1,4 @@
-package Spreadsheet;public class Max {
+package Spreadsheet;
+
+public class Max {
 }

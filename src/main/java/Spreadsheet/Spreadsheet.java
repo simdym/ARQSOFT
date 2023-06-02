@@ -1,2 +1,4 @@
-package Spreadsheet;public class Spreadsheet {
+package Spreadsheet;
+
+public class Spreadsheet {
 }

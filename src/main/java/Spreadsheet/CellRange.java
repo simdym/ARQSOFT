@@ -1,2 +1,4 @@
-package Spreadsheet;public class CellRange {
+package Spreadsheet;
+
+public class CellRange {
 }

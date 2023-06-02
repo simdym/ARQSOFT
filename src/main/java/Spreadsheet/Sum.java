@@ -1,2 +1,4 @@
-package Spreadsheet;public class Sum {
+package Spreadsheet;
+
+public class Sum {
 }
