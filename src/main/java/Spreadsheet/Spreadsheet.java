@@ -2,8 +2,9 @@ package Spreadsheet;public class Spreadsheet {
     public Spreadsheet(){}
     private String filename;
 
-    public void updateAllCells(){}
     private java.util.Map<Coordinate,Cell> cells;
+
+    public void updateAllCells(){}
 
     private int GetMaxRow(){}
 
