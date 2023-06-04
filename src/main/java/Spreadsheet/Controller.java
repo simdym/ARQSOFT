@@ -1,5 +1,7 @@
 package Spreadsheet;
 
+import Spreadsheet.Cmd.Cmd;
+
 public class Controller {
     public void run() {}
     private void processUserCommand(Cmd cmd){}
@@ -8,23 +10,26 @@ public class Controller {
     private void saveSpreadsheet(String filename){}
     private void modifyCellContent(Spreadsheet ss, String cellId, String newValue){
         Coordinate cellCoor = new Coordinate(cellId);
+        Content newContent = stringToContent(newValue);
+        ss.updateContent(cellCoor, newContent);
+    }
 
-        if(isFormula(newValue)) {
+    private Content stringToContent(String contentStr) {
+        Content resContent;
+        if(isFormula(contentStr)) {
             // Formula
 
             //TODO: finish FormulaContent
-            //FormulaContent newContent = FormulaContent();
+            resContent = new FormulaContent();
         } else {
-            if(isNumberString(newValue)) {
-                NumericalContent newContent = new NumericalContent(newValue);
-                ss.updateContent(cellCoor, newContent);
+            if(isNumberString(contentStr)) {
+                resContent = new NumericalContent(contentStr);
             } else {
-                TextContent newContent = new TextContent(newValue);
-                ss.updateContent(cellCoor, newContent);
+                resContent = new TextContent(contentStr);
             }
         }
+        return resContent;
     }
-
     private boolean isFormula(String value) {
         return value.charAt(0) == '=';
     }
