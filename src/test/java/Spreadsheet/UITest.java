@@ -1,19 +1,22 @@
 package Spreadsheet;
 
 import Spreadsheet.Cmd.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UITest {
 
     @Test
-    void testRFCmd() {
+    void testRFCmd() throws FileNotFoundException {
         // TODO
 
         String commandType = "RF";
-        String filepath = "command_path.sv2";
+        String filepath = "src/test/java/Spreadsheet/command_file.txt";
         String commandStr = commandType + " " + filepath;
 
         ByteArrayInputStream in = new ByteArrayInputStream(commandStr.getBytes());
@@ -32,7 +35,7 @@ class UITest {
     }
 
     @Test
-    void testCCmd() {
+    void testCCmd() throws FileNotFoundException {
         ByteArrayInputStream in = new ByteArrayInputStream("C".getBytes());
         System.setIn(in);
 
@@ -46,7 +49,7 @@ class UITest {
     }
 
     @Test
-    void testECmd() {
+    void testECmd() throws FileNotFoundException {
         String commandType = "E";
         String cellId = "B3";
         String contentStr = "123";
@@ -69,7 +72,7 @@ class UITest {
     }
 
     @Test
-    void testLCmd() {
+    void testLCmd() throws FileNotFoundException {
         String commandType = "L";
         String filepath = "spreadsheet_path.sv2";
         String commandStr = commandType + " " + filepath;
@@ -90,7 +93,7 @@ class UITest {
     }
 
     @Test
-    void testSCmd() {
+    void testSCmd() throws FileNotFoundException {
         String commandType = "S";
         String filepath = "spreadsheet_path.sv2";
         String commandStr = commandType + " " + filepath;
