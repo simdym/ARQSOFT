@@ -1,11 +1,9 @@
 package Spreadsheet;
 
 import Spreadsheet.Cmd.*;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UITest {
@@ -44,7 +42,7 @@ class UITest {
         System.out.println("Expected: C");
         System.out.println("Actual: " + testCmd.getType());
 
-        Assert.assertEquals("C", testCmd.getType());
+        assertEquals("C", testCmd.getType());
     }
 
     @Test
