@@ -6,17 +6,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CoordinateTest {
-
     @Test
-    void testGetRow() {
-        Coordinate testCoor = new Coordinate(12, 34);
-        assertEquals(testCoor.getRow(), 12);
+    void testNotEquals() {
+        Coordinate coordinate1 = new Coordinate(12, 34);
+        Coordinate coordinate2 = new Coordinate(56, 78);
+        assertNotEquals(coordinate1, coordinate2);
     }
 
     @Test
-    void testGetCol() {
-        Coordinate testCoor = new Coordinate(12, 34);
-        assertEquals(testCoor.getCol(), 34);
+    void testEquals() {
+        Coordinate coordinate1 = new Coordinate(12, 34);
+        Coordinate coordinate2 = new Coordinate(12, 34);
+        assertEquals(coordinate1, coordinate2);
     }
 
     @Test
