@@ -26,13 +26,14 @@ public class Tokenizer {
         add("SUM|MAX|MIN|AVG", 1); // function name
         add("\\(", 2); // open bracket
         add("\\)", 3); // close bracket
-        add("[\\+\\-\\*/\\^]", 4); // operator
-        add("[0-9]+", 5); // integer number
-        add("[A-Z][0-9][:][A-Z][0-9]+", 6);//range
-        add("[A-Z][0-9]+", 7); //cell identifier
-        add(":", 8);//colon
-        add(";", 9);//semi-colon
-        add(",", 10);//comma
+        add("[\\+\\-]", 4); // operator
+        add("[*/]", 5); // operator
+        add("[0-9]+", 6); // integer number
+        add("[A-Z][0-9][:][A-Z][0-9]+", 7);//range
+        add("[A-Z][0-9]+", 8); //cell identifier
+        add(":", 9);//colon
+        add(";", 10);//semi-colon
+        add(",", 11);//comma
 
 
     }
@@ -56,6 +57,7 @@ public class Tokenizer {
 
     public void tokenize(String str) {
         String s = new String(str);
+        s = s.replaceAll("\\s", "");
         tokens.clear();
         while (!s.equals("")) {
             boolean match = false;
@@ -63,10 +65,8 @@ public class Tokenizer {
                 Matcher m = info.regex.matcher(s);
                 if (m.find()) {
                     match = true;
-
                     String tok = m.group().trim();
                     tokens.add(new Token(info.token, tok));
-
                     s = m.replaceFirst("");
                     break;
                 }
