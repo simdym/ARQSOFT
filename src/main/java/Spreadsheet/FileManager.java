@@ -1,10 +1,32 @@
 package Spreadsheet;
 
+import Spreadsheet.Cmd.Cmd;
+
 import java.io.*;
+import java.util.Scanner;
 
 public class FileManager {
     public FileManager() {}
-    //public Spreadsheet loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet){}
+
+    public Spreadsheet loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet) throws FileNotFoundException {
+        File file = new File(filepath);
+        Scanner sc = new Scanner(file);
+        ContentFactory cf = new ContentFactory();
+
+        int row = 0;
+        while (sc.hasNextLine()) {
+            String str = sc.nextLine();
+
+            String[] cellContents = str.split(";");
+
+            for(int col = 0; col < cellContents.length; col++) {
+                Content newContent = cf.createContent(cellContents[col]);
+                targetSpreadsheet.updateContent(new Coordinate(row, col), newContent);
+            }
+
+            row++;
+        }
+    }
     //private Spreadsheet S2VToSpreadsheet(String filename){}
     public void saveSpreadsheet(Spreadsheet originSpreadsheet, String filepath) throws IOException {
         int maxRow = originSpreadsheet.getMaxRow();
