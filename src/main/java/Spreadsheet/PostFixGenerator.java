@@ -2,56 +2,57 @@ package Spreadsheet;
 import java.util.Stack;
 import java.util.LinkedList;
 import Spreadsheet.Tokenizer;
+
 public class PostFixGenerator {
-    public PostFixGenerator(){}
+    public PostFixGenerator() {}
+
     public LinkedList<Tokenizer.Token> generatePostfix(LinkedList<Tokenizer.Token> tokenList) {
         LinkedList<Tokenizer.Token> postfixList = new LinkedList<>();
         Stack<Tokenizer.Token> operatorStack = new Stack<>();
 
         for (Tokenizer.Token token : tokenList) {
-            if (token.token == 1) { // if number or cell, add directly to list
-                //FORMULA QUE ET RETORNI EL NUMERO
-            }
-            if (token.token == 6 || token.token == 8) { // if number or cell, add directly to list
-                postfixList.add(token);
-            } else if (token.token == 2) { // if ( precedence 0, push on stack
-                operatorStack.push(token);
-            } else if (token.token == 4 || token.token == 5) { // if +, -, *, or /, handle operator precedence
-                while (!operatorStack.isEmpty() && operatorStack.peek().token != 2 &&
-                        getPrecedence(operatorStack.peek()) >= getPrecedence(token)) {
-                    postfixList.add(operatorStack.pop());
-                }
-                operatorStack.push(token);
-            } else if (token.token == 3) { // if ), pop until finding matching parenthesis
-                while (!operatorStack.isEmpty() && operatorStack.peek().token != 2) {
-                    postfixList.add(operatorStack.pop());
-                }
-                if (!operatorStack.isEmpty() && operatorStack.peek().token == 2) {
-                    operatorStack.pop(); // Discard the left parenthesis
-                } else {
-                    throw new IllegalArgumentException("Mismatched parentheses");
-                }
-            }
-        }
+            int num = token.token; // read integer-format token
+            String str = token.sequence; // string character read
 
-        while (!operatorStack.isEmpty()) {
-            if (operatorStack.peek().token == 2 || operatorStack.peek().token == 3) {
-                throw new IllegalArgumentException("Mismatched parentheses");
+            if (num == 6 || num == 8|| num ==7) { // if read token is a number...
+                //postfixList += str;
+                postfixList.add(token); // ...add Token to the queue
             }
+            else if (num == 1) {
+                operatorStack.push(token);
+            }
+            else if (num == 4 || num == 5) {
+
+                while ((!operatorStack.isEmpty()) && (operatorStack.peek().token != 2) && (operatorStack.peek().token >= num)) {
+                    postfixList.add(operatorStack.pop());
+                }
+
+                operatorStack.push(token);
+            }
+
+            else if (num == 2) { // if read token is an open bracket...
+                operatorStack.push(token);
+            }
+            else if (num == 3){ // if read token IS a right parenthesis...
+                while ((!operatorStack.isEmpty()) && (operatorStack.peek().token != 2)) { // the operator at the top of the operator stack is not a left parenthesis
+                    postfixList.add(operatorStack.pop());
+                }
+
+                operatorStack.pop();
+
+                if ((!operatorStack.isEmpty()) && (operatorStack.peek().token == 1)){
+                    postfixList.add(operatorStack.pop());
+                }
+            }
+
+
+        }
+        while (!operatorStack.isEmpty()) {
             postfixList.add(operatorStack.pop());
         }
 
         return postfixList;
     }
 
-    private int getPrecedence(Tokenizer.Token operator) {
-        if (operator.token == 4 || operator.token == 5) {
-            return 1; // + or - has the same precedence as * or /
-        } else if (operator.token == 6) {
-            return 2; // * or / has higher precedence
-        }
-        return 0; // Other operators have the lowest precedence
-    }
 
 }
-
