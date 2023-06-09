@@ -1,8 +1,8 @@
 package Spreadsheet;
 
 public abstract class Content {
-    private String content;
-    private Value value;
+    protected String content;
+    protected Value value;
 
     Content(String content, Value value) {
         this.content = content;
