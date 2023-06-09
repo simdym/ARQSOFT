@@ -23,7 +23,7 @@ public class Tokenizer {
     public Tokenizer() {
         tokenInfos = new LinkedList<TokenInfo>();
         tokens = new LinkedList<Token>();
-        add("SUM|MAX|MIN|AVG", 1); // function name
+        add( "\\b(SUM\\(|MAX\\(|MIN\\(|AVG\\()", 1); // function name
         add("\\(", 2); // open bracket
         add("\\)", 3); // close bracket
         add("[\\+\\-]", 4); // operator
@@ -48,13 +48,9 @@ public class Tokenizer {
     public class Token {
         public final int token;
         public final String sequence;
-
-        public LinkedList<Token> functionArgs; // Additional field for function arguments
-
         public Token(int token, String sequence) {
             this.token = token;
             this.sequence = sequence;
-            this.functionArgs = new LinkedList<>();
         }
     }
 
