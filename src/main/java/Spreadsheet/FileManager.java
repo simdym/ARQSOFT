@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class FileManager {
     public FileManager() {}
 
-    public Spreadsheet loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet) throws FileNotFoundException {
+    public void loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet) throws FileNotFoundException {
         File file = new File(filepath);
         Scanner sc = new Scanner(file);
         ContentFactory cf = new ContentFactory();
@@ -17,11 +17,13 @@ public class FileManager {
         while (sc.hasNextLine()) {
             String str = sc.nextLine();
 
-            String[] cellContents = str.split(";");
+            String[] cellContents = str.split(";", -1);
 
             for(int col = 0; col < cellContents.length; col++) {
-                Content newContent = cf.createContent(cellContents[col]);
-                targetSpreadsheet.updateContent(new Coordinate(row, col), newContent);
+                if(cellContents[col] != "") {
+                    Content newContent = cf.createContent(cellContents[col]);
+                    targetSpreadsheet.updateContent(new Coordinate(row, col), newContent);
+                }
             }
 
             row++;
@@ -36,9 +38,9 @@ public class FileManager {
         BufferedWriter bw = new BufferedWriter(fw);
 
         try {
-            for (int col = 0; col < (maxCol + 1); col++) {
+            for (int row = 0; row < (maxRow + 1); row++) {
                 StringBuilder columnString = new StringBuilder();
-                for (int row = 0; row < (maxRow + 1); row++) {
+                for (int col = 0; col < (maxCol + 1); col++) {
                     // Retrieve content and convert to String
                     Content content = originSpreadsheet.getContent(new Coordinate(row, col));
                     String stringContent = "";
