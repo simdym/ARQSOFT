@@ -11,9 +11,9 @@ class TokenizerTest {
     void testTokenizeFun() {
         Tokenizer tokenizer = new Tokenizer();
         //tokenizer.tokenize("SUM(2;3;30)+29");
-        tokenizer.tokenize("8-AVG(2;3)");
+        tokenizer.tokenize("MAX(2;4;3;9;3)+5/5+2+(8/7-1)");
         for (Tokenizer.Token tok : tokenizer.getTokens()) {
-            //System.out.println("" + tok.token + " " + tok.sequence);
+            System.out.println("" + tok.token + " " + tok.sequence);
         }
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());

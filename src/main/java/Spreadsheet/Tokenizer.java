@@ -49,9 +49,12 @@ public class Tokenizer {
         public final int token;
         public final String sequence;
 
+        public LinkedList<Token> functionArgs; // Additional field for function arguments
+
         public Token(int token, String sequence) {
             this.token = token;
             this.sequence = sequence;
+            this.functionArgs = new LinkedList<>();
         }
     }
 
