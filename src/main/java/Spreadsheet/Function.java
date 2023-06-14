@@ -14,7 +14,7 @@ public abstract class Function implements Argument {
     }
 
 
-    public abstract double computeValue();//abstract, since it depends on each subclass of funcion
+    public abstract double getDoubleValue();//abstract, since it depends on each subclass of funcion
 
     public static class FunctionFactory {//class functionfactory with static method createfunction which receives string (SUM,etc) and creates an object suma, an object min...
         public static Function createFunction(String functionName) {

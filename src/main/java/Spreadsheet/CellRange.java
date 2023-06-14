@@ -2,7 +2,7 @@ package Spreadsheet;
 import java.util.LinkedList;
 import java.util.LinkedList;
 
-public class CellRange implements Argument{
+public class CellRange{
     private Coordinate topLeftCoordinate;
     private Coordinate bottomRightCoordinate;
     private Spreadsheet spreadsheet;

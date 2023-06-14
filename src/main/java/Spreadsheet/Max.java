@@ -1,18 +1,16 @@
 package Spreadsheet;
 
 public class Max extends Function{
-    public double computeValue(){
-        float v = 0;
-        return v;
+    public double getDoubleValue(){
 
-        /*double max = arguments.getFirst().getValue();
+        double max = arguments.getFirst().getDoubleValue();
         for (Argument argument : arguments) {
-            double value = argument.getValue();
+            double value = argument.getDoubleValue();
             if (value > max) {
                 max = value;
             }
         }
-        return max;*/
-    };
+        return max;
+    }
     //return Collections.max(arguments);
 }

@@ -1,10 +1,10 @@
 package Spreadsheet;
 
 public class Sum extends Function{
-    public double computeValue(){
+    public double getDoubleValue(){
         float sum = 0;
         for (Argument argument : arguments) {
-            //sum += argument.getValue();
+            sum += argument.getDoubleValue();
         }
         return sum;
     };

@@ -16,4 +16,5 @@ public class NumericalValue implements Value ,Argument{
     }
 
     public Double getValue() {return value;}
+    public double getDoubleValue() {return value;}
 }

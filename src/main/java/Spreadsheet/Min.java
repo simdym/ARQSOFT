@@ -1,16 +1,14 @@
 package Spreadsheet;
 
-public class Min extends Function{
-    public double computeValue(){
-        float min=0;
-        /*float min = arguments.getFirst().getValue();
+public class Min extends Function {
+    public double getDoubleValue() {
+        double min = arguments.getFirst().getDoubleValue();
         for (Argument argument : arguments) {
-            double value = argument.getValue();
+            double value = argument.getDoubleValue();
             if (value < min) {
                 min = value;
             }
-        }*/
+        }
         return min;
     }
-
 }

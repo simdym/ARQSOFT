@@ -9,12 +9,12 @@ import java.util.Collections;
 public class PostFixEvaluator {
     public PostFixEvaluator() {}
     //has to have a spreadsheet evaluator
-    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression) {
+    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression, Spreadsheet spreadsheet) {
 
             Stack<Double> operandStack = new Stack<>();
             for (FormulaComponent fComp : postFixExpression){
                 if(fComp instanceof Operand){
-                    double operandValue = ((Operand) fComp).getValue();
+                    double operandValue = ((Operand) fComp).getValue(spreadsheet);
                     operandStack.push(operandValue);
                 }
                 if (fComp instanceof Operator){
