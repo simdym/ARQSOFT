@@ -20,9 +20,6 @@ public class Operand extends FormulaComponent {
         }
         if (token.token==8) {//if cells
             Coordinate coord = new Coordinate(token.sequence);
-           /*
-            Content  content=  cell.getContent();
-            Object valueObj=  content.getValue().getValue();*/
             Cell cell = spreadsheet.getCell(coord);
             value = cell.getDoubleValue();
 
@@ -45,12 +42,19 @@ public class Operand extends FormulaComponent {
                 function.addArgument(arg);
             }
             if (token.token==7){//if range
+                System.out.println("OneCellRange");
                 String[] coordString = token.sequence.split(":");
                 Coordinate coord1 = new Coordinate(coordString [0]);
                 Coordinate coord2 = new Coordinate(coordString [1]);
                 CellRange cellRange = new CellRange(coord1,coord2,spreadsheet);
+
+
+                LinkedList<Cell> ll = cellRange.listOfCells();
+                System.out.println(ll.size());
                 for (Cell cell : cellRange.listOfCells()){
+
                     function.addArgument(cell);
+                    System.out.println(cell.getDoubleValue());
                 }
 
             }
@@ -61,7 +65,7 @@ public class Operand extends FormulaComponent {
             }
             if (token.token==1){// if another function
                 int nestedFunctionEndIndex = findMatchingClosingParenthesis(tokenList, i);
-                LinkedList<Tokenizer.Token> nestedTokens= new LinkedList<>(tokenList.subList(i + 1, nestedFunctionEndIndex));
+                LinkedList<Tokenizer.Token> nestedTokens= new LinkedList<>(tokenList.subList(i, nestedFunctionEndIndex));
                 Argument arg=functionGenerator(nestedTokens, spreadsheet);
                 function.addArgument(arg);
                 i = nestedFunctionEndIndex;

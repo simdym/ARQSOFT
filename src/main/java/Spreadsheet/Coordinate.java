@@ -38,6 +38,9 @@ public class Coordinate {
         // -1 because 0-indexing
         col -= 1;
         row = Integer.parseInt(rowString) - 1;
+        System.out.println("row"+row);
+        System.out.println("col"+col);
+
     }
 
 

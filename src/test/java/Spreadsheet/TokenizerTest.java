@@ -40,7 +40,7 @@ class TokenizerTest {
         Spreadsheet spreadsheet = new Spreadsheet();
         spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("8"));
         spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("1"));
-        tokenizer.tokenize("MIN(C4:C5;10;20)");
+        tokenizer.tokenize("SUM(1;10;20;AVG(1;3))");
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         Operand operand = new Operand(postfixTokens);
