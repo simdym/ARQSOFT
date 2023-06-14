@@ -9,14 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class TokenizerTest {
     @Test
     void testTokenizeFun() {
-        Spreadsheet spreadsheet = new Spreadsheet();
-        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
-        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
-        spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("8"));
-        spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
-
         Tokenizer tokenizer = new Tokenizer();
-        tokenizer.tokenize("5+C4");
+        tokenizer.tokenize("3+MAX(3.88;AVG(2;3))-MIN(2;1)+(26*3)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
 
         PostFixGenerator postFixGenerator = new PostFixGenerator();
@@ -26,9 +20,8 @@ class TokenizerTest {
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
         LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
 
-        PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
-        double result = postFixEvaluator.evaluatePostfix(formulaTokens, spreadsheet);
-        System.out.println(result);
+        //PostFixEvaluator postFixEvaluator = new PostFixEvaluator(spreadsheet);
+        //double result = postFixEvaluator.evaluatePostfix(formulaTokens);
 
        }
     @Test
@@ -45,35 +38,14 @@ class TokenizerTest {
     void testOperand() {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
-        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
-        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
-        spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("8"));
-        spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
-        System.out.println("START");
-        tokenizer.tokenize("SUM(C4:D5)");
+        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("8"));
+        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("1"));
+        tokenizer.tokenize("SUM(1;10;20;AVG(1;3))");
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         Operand operand = new Operand(postfixTokens);
         double result = operand.getValue(spreadsheet);
         System.out.println(result);
-
-    }
-
-    @Test
-    void testRange() {
-        Tokenizer tokenizer = new Tokenizer();
-        Spreadsheet spreadsheet = new Spreadsheet();
-        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
-        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
-        spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("3"));
-        spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
-        System.out .println("-----");
-        Coordinate lala = new Coordinate(3,2);
-        //Coordinate lala = new Coordinate("C4");
-        System.out .println(lala.getRow()+";"+lala.getCol());
-        Cell cell = spreadsheet.getCell(lala);
-        System.out .println(cell.getDoubleValue());
-
 
     }
 

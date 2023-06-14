@@ -18,16 +18,14 @@ public class CellRange{
         int bottomRow = bottomRightCoordinate.getRow();
         int topCol = topLeftCoordinate.getCol();
         int bottomCol = bottomRightCoordinate.getCol();
-        System.out.println(topRow+","+bottomRow+";"+topCol+","+bottomCol);
+
         LinkedList<Cell> cells = new LinkedList<>();
 
         for (int currentRow = topRow; currentRow <= bottomRow; currentRow++) {
             for (int currentCol = topCol; currentCol <= bottomCol; currentCol++) {
                 Coordinate currentCoord = new Coordinate(currentRow, currentCol);
                 Cell cell = spreadsheet.getCell(currentCoord);
-                System.out.println("i");
                 if (cell != null) {
-
                     cells.add(cell);
                 }
             }
