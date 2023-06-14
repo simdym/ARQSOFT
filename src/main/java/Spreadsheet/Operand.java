@@ -38,6 +38,7 @@ public class Operand extends FormulaComponent {
         for (int i = 1; i < tokenList.size(); i++) {
             Tokenizer.Token token = tokenList.get(i);
             if (token.token==6){//if number
+
                 Argument arg = new NumericalValue(token.sequence);
                 function.addArgument(arg);
             }
@@ -48,17 +49,14 @@ public class Operand extends FormulaComponent {
                 Coordinate coord2 = new Coordinate(coordString [1]);
                 CellRange cellRange = new CellRange(coord1,coord2,spreadsheet);
 
-
-                LinkedList<Cell> ll = cellRange.listOfCells();
-                System.out.println(ll.size());
                 for (Cell cell : cellRange.listOfCells()){
-
                     function.addArgument(cell);
                     System.out.println(cell.getDoubleValue());
                 }
 
             }
             if (token.token==8){// if cell
+                System.out.println("OneCell");
                 Coordinate coord = new Coordinate(token.sequence);
                 Argument arg = spreadsheet.getCell(coord);
                 function.addArgument(arg);
@@ -77,6 +75,7 @@ public class Operand extends FormulaComponent {
     }
 
     public int findMatchingClosingParenthesis(LinkedList<Tokenizer.Token> tokenList, int startIndex) {
+        System.out.println("Nest");
         int nests = 1;
         int j = startIndex;
         while (nests != 0 && j < tokenList.size()) {
@@ -95,6 +94,10 @@ public class Operand extends FormulaComponent {
         }
 
         return j ;
+    }
+
+    public LinkedList<Tokenizer.Token> getOperandTokens() {
+        return operandTokens;
     }
 
 

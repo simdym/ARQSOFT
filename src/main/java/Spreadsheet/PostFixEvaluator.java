@@ -14,8 +14,10 @@ public class PostFixEvaluator {
             Stack<Double> operandStack = new Stack<>();
             for (FormulaComponent fComp : postFixExpression){
                 if(fComp instanceof Operand){
+                    for (Tokenizer.Token tok : ((Operand) fComp).getOperandTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
                     double operandValue = ((Operand) fComp).getValue(spreadsheet);
                     operandStack.push(operandValue);
+                        System.out.println(operandValue);
                 }
                 if (fComp instanceof Operator){
                     double operator2 = operandStack.pop();
@@ -23,10 +25,11 @@ public class PostFixEvaluator {
                     double operationResult = ((Operator) fComp).evaluateOperation(operator1,operator2);
                     operandStack.push(operationResult);
                 }
-            }
-            double result = operandStack.pop();
-        if (!operandStack.isEmpty()) {
-            // throw exception for non-empty stack
-        }
-            return result;
-    }}
+            }double result = operandStack.pop();
+        return result;}
+
+
+
+    }
+
+

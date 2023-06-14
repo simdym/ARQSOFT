@@ -17,7 +17,7 @@ public class FormulaComponentFabricator {
             if (tokenType == 4 || tokenType == 5) {
                 Operator operator = new Operator(token);
                 componentList.add(operator);
-            } else if (tokenType == 6 || tokenType == 7) {
+            } else if (tokenType == 6 || tokenType == 8) {
                 if (openFunction > 0) {
                     functionArgumentTokens.add(token);
                 } else {
@@ -44,7 +44,6 @@ public class FormulaComponentFabricator {
             }
         }
 
-        System.out.println("Length of componentList: " + componentList.size());
         return componentList;
     }
 
