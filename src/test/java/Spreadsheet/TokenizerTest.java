@@ -10,22 +10,41 @@ class TokenizerTest {
     @Test
     void testTokenizeFun() {
         Tokenizer tokenizer = new Tokenizer();
-        //tokenizer.tokenize("SUM(2;3;30)+29");
-        tokenizer.tokenize("4+8*AVG(8+56-3+1;4;45-2*1;60/3-20+SUM(3;4))+AVG(2+3;0)*2");
-        for (Tokenizer.Token tok : tokenizer.getTokens()) {
-          //System.out.println("" + tok.token + " " + tok.sequence);
-            }
+        tokenizer.tokenize("3+MAX(3;AVG(2;3))-MIN(2;1)+(26*3");
+        //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
 
-            PostFixGenerator postFixGenerator = new PostFixGenerator();
-            LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
-            // Output the postfix expression
-            for (Tokenizer.Token tok : postfixTokens) {
-                System.out.println("" + tok.token + " " + tok.sequence);
-            }
-         PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
-       float result = postFixEvaluator.evaluatePostfix(postfixTokens);
+        PostFixGenerator postFixGenerator = new PostFixGenerator();
+        LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
+        //for (Tokenizer.Token tok : postfixTokens) {System.out.println("" + tok.token + " " + tok.sequence);}
+
+        FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
+        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
+
+        PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
+        float result = postFixEvaluator.evaluatePostfix(formulaTokens);
+
+       }
+    @Test
+    void testEvaluateOperation() {
+        Tokenizer.Token token = new Tokenizer().new Token(4, "*");
+        Operator operator = new Operator(token);
+        float operand1 = 3f;
+        float operand2 = 5f;
+        float result = operator.evaluateOperation(operand1, operand2);
         System.out.println(result);
-        }}
+    }
+
+
+
+
+
+// first, get formula coperator and operabnd
+//
+//
+
+//
+//        System.out.println(result);
+}
 
 
 

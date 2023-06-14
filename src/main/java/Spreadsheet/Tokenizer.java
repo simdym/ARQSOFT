@@ -46,13 +46,18 @@ public class Tokenizer {
     }
 
     public class Token {
-        public final int token;
+        public final int token;// modify to tokentype
         public final String sequence;
         public Token(int token, String sequence) {
             this.token = token;
             this.sequence = sequence;
         }
     }
+
+   /* public Token getToken(){
+        //implement, to makethe int and string private
+
+    }*/
 
     public void tokenize(String str) {
         String s = new String(str);
