@@ -10,14 +10,32 @@ public class Spreadsheet {
     }
     public void updateAllCells(){}
 
-    //private int GetMaxRow(){}
+    public int getMaxRow() {
+        int maxRow = 0;
+        for(Coordinate coordinate: cells.keySet()) {
+            if(coordinate.getRow() > maxRow) {
+                maxRow = coordinate.getRow();
+            }
+        }
 
-    //private int GetMaxColumn(){}
+        return maxRow;
+    }
 
-    //private boolean isEmpty(int row, int col){}
-    public void spreadsheetToS2V(){}
+    public int getMaxColumn() {
+        int maxColumn = 0;
+        for(Coordinate coordinate: cells.keySet()) {
+            if(coordinate.getCol() > maxColumn) {
+                maxColumn = coordinate.getCol();
+            }
+        }
 
-    public void deleteCell(String cellID){}
+        return maxColumn;
+    }
+
+    private boolean isEmpty(int row, int col) {
+        Coordinate coordinate = new Coordinate(row, col);
+        return cells.containsKey(coordinate);
+    }
 
     public void updateContent(Coordinate coordinate, Content content) {
         Cell cell = cells.get(coordinate);
@@ -29,10 +47,13 @@ public class Spreadsheet {
         }
     }
 
+
     public Content getContent(Coordinate coordinate) {
-        return cells.get(coordinate).getContent();
+        Cell cell = cells.get(coordinate);
+        if (cell == null) {
+            return null;
+        } else {
+            return cell.getContent();
+        }
     }
-
-
-
 }
