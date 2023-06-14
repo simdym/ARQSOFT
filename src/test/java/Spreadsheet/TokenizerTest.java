@@ -38,8 +38,9 @@ class TokenizerTest {
     void testOperand() {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
-        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("89"));
-        tokenizer.tokenize("MIN(100;10;20)");
+        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("8"));
+        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("1"));
+        tokenizer.tokenize("MIN(C4:C5;10;20)");
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         Operand operand = new Operand(postfixTokens);

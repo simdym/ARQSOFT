@@ -28,14 +28,14 @@ public class Operand extends FormulaComponent {
 
         }
         else if (token.token == 1){ //Then it's function
-            Function function = functionGenerator(operandTokens);
+            Function function = functionGenerator(operandTokens,spreadsheet);
             value = function.getDoubleValue();
         }
 
         return value;
     }
 
-    public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList){
+    public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet){
         Tokenizer.Token functionToken= tokenList.getFirst();
         Function function = Function.FunctionFactory.createFunction(functionToken.sequence);
         for (int i = 1; i < tokenList.size(); i++) {
@@ -62,7 +62,7 @@ public class Operand extends FormulaComponent {
             if (token.token==1){// if another function
                 int nestedFunctionEndIndex = findMatchingClosingParenthesis(tokenList, i);
                 LinkedList<Tokenizer.Token> nestedTokens= new LinkedList<>(tokenList.subList(i + 1, nestedFunctionEndIndex));
-                Argument arg=functionGenerator(nestedTokens);
+                Argument arg=functionGenerator(nestedTokens, spreadsheet);
                 function.addArgument(arg);
                 i = nestedFunctionEndIndex;
 
