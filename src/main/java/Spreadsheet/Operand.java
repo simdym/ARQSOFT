@@ -97,6 +97,9 @@ public class Operand extends FormulaComponent {
         return j ;
     }
 
+    public LinkedList<Tokenizer.Token> getOperandTokens() {
+        return operandTokens;
+    }
 
 
 

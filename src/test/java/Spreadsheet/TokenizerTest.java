@@ -11,11 +11,13 @@ class TokenizerTest {
     void testTokenizeFun() {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
-        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("8"));
-        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("1"));
+        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
+        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
+        spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("3"));
+        spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("2+(8/4)+3+SUMA(3;2)");
+        tokenizer.tokenize("SUM(2;5;MAX(C4:D5))+6*(10)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
 
         PostFixGenerator postFixGenerator = new PostFixGenerator();
@@ -27,7 +29,7 @@ class TokenizerTest {
 
         PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
         double result = postFixEvaluator.evaluatePostfix(formulaTokens,spreadsheet);
-        System.out.println(result);
+        System.out.println("Result: "+result);
        }
     @Test
     void testEvaluateOperation() {
