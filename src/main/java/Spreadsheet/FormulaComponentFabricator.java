@@ -28,17 +28,20 @@ public class FormulaComponentFabricator {
             } else if (tokenType == 1) {
                 if (openFunction > 0) {
                     functionArgumentTokens.add(token);
+                    openFunction++;
                 } else {
                     functionArgumentTokens = new LinkedList<>();
                     functionArgumentTokens.add(token);
-                    openFunction += 1;
+                    openFunction++;
                 }
             } else if (tokenType == 10) {
                 functionArgumentTokens.add(token);
             } else if (tokenType == 3) { // end of function
                 functionArgumentTokens.add(token);
+
                 openFunction -= 1;
                 if (openFunction == 0) {
+                    //for (Tokenizer.Token tok : functionArgumentTokens) {System.out.println("" + tok.token + " " + tok.sequence);}
                     Operand functionOperand = new Operand(functionArgumentTokens);
                     componentList.add(functionOperand);
                 }

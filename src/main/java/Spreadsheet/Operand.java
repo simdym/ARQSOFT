@@ -18,13 +18,14 @@ public class Operand extends FormulaComponent {
             value = new NumericalValue(token.sequence).getDoubleValue();
 
         }
-        if (token.token==8) {//if cells
+        else if (token.token==8) {//if cells
             Coordinate coord = new Coordinate(token.sequence);
             Cell cell = spreadsheet.getCell(coord);
             value = cell.getDoubleValue();
 
         }
         else if (token.token == 1){ //Then it's function
+            //for (Tokenizer.Token tok : operandTokens) {System.out.println("" + tok.token + " " + tok.sequence);}
             Function function = functionGenerator(operandTokens,spreadsheet);
             value = function.getDoubleValue();
         }
@@ -32,60 +33,52 @@ public class Operand extends FormulaComponent {
         return value;
     }
 
-    public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet){
-        Tokenizer.Token functionToken= tokenList.getFirst();
+    public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet) {
+        Tokenizer.Token functionToken = tokenList.getFirst();
         Function function = Function.FunctionFactory.createFunction(functionToken.sequence);
-        for (int i = 1; i < tokenList.size(); i++) {
+        int i = 1;
+        while (i < tokenList.size()) {
             Tokenizer.Token token = tokenList.get(i);
-            if (token.token==6){//if number
+            if (token.token == 6) { // if number
                 Argument arg = new NumericalValue(token.sequence);
                 function.addArgument(arg);
-            }
-            if (token.token==7){//if range
-                System.out.println("OneCellRange");
+            } else if (token.token == 7) { // if range
                 String[] coordString = token.sequence.split(":");
-                Coordinate coord1 = new Coordinate(coordString [0]);
-                Coordinate coord2 = new Coordinate(coordString [1]);
-                CellRange cellRange = new CellRange(coord1,coord2,spreadsheet);
-
-
-                LinkedList<Cell> ll = cellRange.listOfCells();
-                System.out.println(ll.size());
-                for (Cell cell : cellRange.listOfCells()){
-
+                Coordinate coord1 = new Coordinate(coordString[0]);
+                Coordinate coord2 = new Coordinate(coordString[1]);
+                CellRange cellRange = new CellRange(coord1, coord2, spreadsheet);
+                for (Cell cell : cellRange.listOfCells()) {
                     function.addArgument(cell);
-                    System.out.println(cell.getDoubleValue());
                 }
-
-            }
-            if (token.token==8){// if cell
+            } else if (token.token == 8) { // if cell
                 Coordinate coord = new Coordinate(token.sequence);
                 Argument arg = spreadsheet.getCell(coord);
                 function.addArgument(arg);
-            }
-            if (token.token==1){// if another function
+            } else if (token.token == 1) { // if another function
                 int nestedFunctionEndIndex = findMatchingClosingParenthesis(tokenList, i);
-                LinkedList<Tokenizer.Token> nestedTokens= new LinkedList<>(tokenList.subList(i, nestedFunctionEndIndex));
-                Argument arg=functionGenerator(nestedTokens, spreadsheet);
+                LinkedList<Tokenizer.Token> nestedTokens = new LinkedList<>(tokenList.subList(i, nestedFunctionEndIndex));
+                Argument arg = functionGenerator(nestedTokens, spreadsheet);
                 function.addArgument(arg);
                 i = nestedFunctionEndIndex;
-
             }
-
+            i++;
         }
         return function;
     }
 
-    public int findMatchingClosingParenthesis(LinkedList<Tokenizer.Token> tokenList, int startIndex) {
-        int nests = 1;
-        int j = startIndex;
-        while (nests != 0 && j < tokenList.size()) {
-            Tokenizer.Token token = tokenList.get(j);
 
+    public int findMatchingClosingParenthesis(LinkedList<Tokenizer.Token> tokenList, int startIndex) {
+        int nests = 0;
+        int j = startIndex;
+        while (j < tokenList.size()) {
+            Tokenizer.Token token = tokenList.get(j);
             if (token.token == 1) {
-                nests += 1;
+                nests++;
             } else if (token.token == 3) {
-                nests -= 1;
+                nests--;
+                if (nests == 0) {
+                    break;
+                }
             }
             j++;
         }
@@ -94,13 +87,8 @@ public class Operand extends FormulaComponent {
             throw new IllegalArgumentException("Unbalanced parentheses");
         }
 
-        return j ;
+        return j;
     }
-
-    public LinkedList<Tokenizer.Token> getOperandTokens() {
-        return operandTokens;
-    }
-
 
 
 }

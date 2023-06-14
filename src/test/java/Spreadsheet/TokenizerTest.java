@@ -17,12 +17,12 @@ class TokenizerTest {
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("SUM(2;5;MAX(C4:D5))+6*(10)");
+        tokenizer.tokenize("SUM(2;3;SUM(1;50);AVG(1;MAX(3;1)))+9-AVG(1;3)+(3+5)*3-4/2");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
 
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
-        //for (Tokenizer.Token tok : postfixTokens) {System.out.println("" + tok.token + " " + tok.sequence);}
+        //
 
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
         LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
