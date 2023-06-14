@@ -28,7 +28,7 @@ public class Tokenizer {
         add("\\)", 3); // close bracket
         add("[\\+\\-]", 4); // operator
         add("[\\*\\/]", 5); // operator
-        add("[0-9]+", 6); // integer number
+        add("[0-9]+(\\.[0-9]+)?", 6); //number
         add("[A-Z][0-9][:][A-Z][0-9]+", 7);//range
         add("[A-Z][0-9]+", 8); //cell identifier
         add(":", 9);//colon

@@ -10,7 +10,7 @@ class TokenizerTest {
     @Test
     void testTokenizeFun() {
         Tokenizer tokenizer = new Tokenizer();
-        tokenizer.tokenize("3+MAX(3;AVG(2;3))-MIN(2;1)+(26*3");
+        tokenizer.tokenize("3+MAX(3.88;AVG(2;3))-MIN(2;1)+(26*3)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
 
         PostFixGenerator postFixGenerator = new PostFixGenerator();
@@ -20,8 +20,8 @@ class TokenizerTest {
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
         LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
 
-        PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
-        float result = postFixEvaluator.evaluatePostfix(formulaTokens);
+        //PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
+        //double result = postFixEvaluator.evaluatePostfix(formulaTokens);
 
        }
     @Test

@@ -1,6 +1,6 @@
 package Spreadsheet;
 
-public class Cell {
+public class Cell implements Argument{
     Content content;
 
     Cell(Content content) {

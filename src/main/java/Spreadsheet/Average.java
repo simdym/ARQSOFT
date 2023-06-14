@@ -1,7 +1,7 @@
 package Spreadsheet;
 
 public class Average extends Function{
-    public float computeValue(){
+    public double computeValue(){
         float sum = 0.0f;
         for (Argument argument : arguments) {
             //sum += argument.getValue();

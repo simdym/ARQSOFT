@@ -56,4 +56,8 @@ public class Spreadsheet {
             return cell.getContent();
         }
     }
+
+    public Cell getCell(Coordinate coordinate) {
+        return cells.get(coordinate);
+    }
 }

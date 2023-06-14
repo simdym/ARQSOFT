@@ -1,7 +1,7 @@
 package Spreadsheet;
 
 public class Max extends Function{
-    public float computeValue(){
+    public double computeValue(){
         float v = 0;
         return v;
 

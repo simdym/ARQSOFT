@@ -1,7 +1,7 @@
 package Spreadsheet;
 
 public class Min extends Function{
-    public float computeValue(){
+    public double computeValue(){
         float min=0;
         /*float min = arguments.getFirst().getValue();
         for (Argument argument : arguments) {

@@ -8,8 +8,8 @@ public class Operator extends FormulaComponent{
         this.operatorToken = operatorToken;
     }
 
-    public float evaluateOperation(float operand1, float operand2) {
-        float result = 0;
+    public double evaluateOperation(double operand1, double operand2) {
+        double result = 0;
         switch (operatorToken.sequence) {
             case "+":
                 result = operand1 + operand2;

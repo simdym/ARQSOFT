@@ -1,7 +1,7 @@
 package Spreadsheet;
 
 public class Sum extends Function{
-    public float computeValue(){
+    public double computeValue(){
         float sum = 0;
         for (Argument argument : arguments) {
             //sum += argument.getValue();

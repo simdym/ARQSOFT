@@ -2,7 +2,7 @@ package Spreadsheet;
 
 import java.util.LinkedList;
 
-public abstract class Function {
+public abstract class Function implements Argument {
     protected LinkedList<Argument> arguments;
 
     public Function() {
@@ -14,18 +14,18 @@ public abstract class Function {
     }
 
 
-    public abstract float computeValue();//abstract, since it depends on each subclass of funcion
+    public abstract double computeValue();//abstract, since it depends on each subclass of funcion
 
     public static class FunctionFactory {//class functionfactory with static method createfunction which receives string (SUM,etc) and creates an object suma, an object min...
         public static Function createFunction(String functionName) {
             switch (functionName) {
-                case "SUM":
+                case "SUM(":
                     return new Sum();
-                case "MIN":
+                case "MIN(":
                     return new Min();
-                case "AVG":
+                case "AVG(":
                     return new Average();
-                case "MAX":
+                case "MAX(":
                     return new Max();
                 // Add more cases for other functions
                 default:
@@ -33,4 +33,5 @@ public abstract class Function {
             }
         }
 
-}}
+    }
+}
