@@ -140,6 +140,20 @@ public class Parser {
     }
 return dependencies;
 }
+    public void checkCircularDependencies(Cell cell, List<Cell> visitedCells){
+        if (visitedCells.contains(cell)) {
+            throw new CircularDependencyException("Circular dependency");
+        }
+        for (Cell visitedCell:visitedCells){
+            if (visitedCell.getContent() instanceof FormulaContent){
+                FormulaContent formula = (FormulaContent) visitedCell.getContent();
+                List<Cell> dependencies = formula.getDependentCells();
+                checkCircularDependencies(cell, dependencies);
+            }
+        }
+    }
+
+
 }
 
 

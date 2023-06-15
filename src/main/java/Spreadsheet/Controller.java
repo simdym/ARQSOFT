@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import Spreadsheet.Cmd.CmdFactory;
 import Spreadsheet.Exceptions.ParserException;
+import Spreadsheet.Exceptions.CircularDependencyException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -133,16 +134,15 @@ public class Controller {
                 formula.setValue(new TextValue("SYNTAX ERROR"));
                 throw new ParserException(e.getMessage());
             }
-            parser.setSpreadsheet(spreadsheet);
+
             LinkedList<Tokenizer.Token> parsedTokens = parser.getParsedTokens();
             List<Cell> dependencies = parser.getCellDependencies();
-            /*
             try {
-                this.checkCircularDependency(coordinate, dependencies);
+                parser.checkCircularDependencies(cell,dependencies);
             } catch (CircularDependencyException e) {
                 cell.setContent(previousContent);
                 throw new CircularDependencyException(e.getMessage());
-            }*/
+            }
             formula.setDependentCells(dependencies);
             LinkedList<Tokenizer.Token> postfixExpression= postfixGenerator.generatePostfix(parsedTokens);
             formula.setPostfixExpression(postfixExpression);
