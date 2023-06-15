@@ -1,16 +1,18 @@
 package Spreadsheet;
 import Spreadsheet.Cmd.Cmd;
-import Spreadsheet.Cmd.ECmd;
-import Spreadsheet.Cmd.LCmd;
 import Spreadsheet.Exceptions.EvaluationException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+import Spreadsheet.Cmd.CmdFactory;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Controller {
     private Spreadsheet spreadsheet;
-    private ContentFactory contentFactory;
     private UI ui;
     private FileManager fileManager;
 
@@ -21,7 +23,6 @@ public class Controller {
 
     public Controller() {
         spreadsheet = new Spreadsheet();
-        contentFactory = new ContentFactory();
         ui = new UI();
         fileManager = new FileManager();
     }
@@ -36,36 +37,46 @@ public class Controller {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
             processUserCommand(cmd);
         }
 
     }
     private void processUserCommand(Cmd cmd){
-        switch (cmd.getType()) {
-            case "RF":
-
+        switch (cmd.getCmdType()) {
+            case RUN_FROM_FILE:
+                try {
+                    runCommandsFromFile(cmd.getArgument(0));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
-            case "C":
+            case CREATE_SPREADSHEET:
                 createNewSpreadsheet();
                 break;
-            case "E":
-                modifyCellContent(((ECmd) cmd).getCellID(), ((ECmd) cmd).getContentStr());
+            case EDIT_CELL:
+                modifyCellContent(cmd.getArgument(0), cmd.getArgument(1));
                 break;
-            case "L":
+            case LOAD_SPREADSHEET:
                 try {
-                    loadExistingSpreadsheet(((LCmd) cmd).getFilepath());
+                    loadExistingSpreadsheet(cmd.getArgument(0));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 break;
-            case "S":
+            case SAVE_SPREADSHEET:
                 try {
-                    saveSpreadsheet(((LCmd) cmd).getFilepath());
+                    saveSpreadsheet(cmd.getArgument(0));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 break;
+        }
+    }
+
+    private void runCommandsFromFile(String filepath) throws FileNotFoundException {
+        ArrayList<Cmd> commands = CmdFactory.readCmdFromFile(filepath);
+        for(int i = 0; i < commands.size(); i++) {
+            processUserCommand(commands.get(i));
         }
     }
 
@@ -80,7 +91,7 @@ public class Controller {
     }
     private void modifyCellContent(String cellId, String newValue){
         Coordinate cellCoor = new Coordinate(cellId);
-        Content newContent = contentFactory.createContent(newValue);
+        Content newContent = ContentFactory.createContent(newValue);
         spreadsheet.updateContent(cellCoor, newContent);
     }
 

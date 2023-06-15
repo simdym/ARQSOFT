@@ -1,7 +1,6 @@
 package Spreadsheet;
 
 import Spreadsheet.Cmd.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -13,8 +12,6 @@ class UITest {
 
     @Test
     void testRFCmd() throws FileNotFoundException {
-        // TODO
-
         String commandType = "RF";
         String filepath = "src/test/java/Spreadsheet/command_file.txt";
         String commandStr = commandType + " " + filepath;
@@ -23,14 +20,14 @@ class UITest {
         System.setIn(in);
 
         UI ui = new UI();
-        RFCmd testCmd = (RFCmd) ui.askForCmd();
+        Cmd testCmd = ui.askForCmd();
 
         System.out.println("Expected: " + commandStr);
-        System.out.println("Actual: " + testCmd.getType());// + " " + testCmd.getFilepath());
+        System.out.println("Actual: " + testCmd.getCmdType());// + " " + testCmd.getFilepath());
 
         assertAll("Testing all variables",
-                () -> assertEquals(commandType, testCmd.getType())
-                //() -> assertEquals(filepath, testCmd.getFilepath())
+                () -> assertEquals(CmdType.RUN_FROM_FILE, testCmd.getCmdType()),
+                () -> assertEquals(filepath, testCmd.getArgument(0))
         );
     }
 
@@ -42,10 +39,10 @@ class UITest {
         UI ui = new UI();
         Cmd testCmd = ui.askForCmd();
 
-        System.out.println("Expected: C");
-        System.out.println("Actual: " + testCmd.getType());
+        System.out.println("Expected: "+ CmdType.CREATE_SPREADSHEET);
+        System.out.println("Actual: " + testCmd.getCmdType());
 
-        assertEquals("C", testCmd.getType());
+        assertEquals(CmdType.CREATE_SPREADSHEET, testCmd.getCmdType());
     }
 
     @Test
@@ -59,15 +56,15 @@ class UITest {
         System.setIn(in);
 
         UI ui = new UI();
-        ECmd testCmd = (ECmd) ui.askForCmd();
+        Cmd testCmd = ui.askForCmd();
 
         System.out.println("Expected: " + commandStr);
-        System.out.println("Actual: " + testCmd.getType() + " " + testCmd.getCellID() + " " + testCmd.getContentStr());
+        System.out.println("Actual: " + testCmd.getCmdType() + " " + testCmd.getArgument(0) + " " + testCmd.getArgument(1));
 
         assertAll("Testing all variables",
-                () -> assertEquals(commandType, testCmd.getType()),
-                () -> assertEquals(cellId, testCmd.getCellID()),
-                () -> assertEquals(contentStr, testCmd.getContentStr())
+                () -> assertEquals(CmdType.EDIT_CELL, testCmd.getCmdType()),
+                () -> assertEquals(cellId, testCmd.getArgument(0)),
+                () -> assertEquals(contentStr, testCmd.getArgument(1))
         );
     }
 
@@ -81,14 +78,14 @@ class UITest {
         System.setIn(in);
 
         UI ui = new UI();
-        LCmd testCmd = (LCmd) ui.askForCmd();
+        Cmd testCmd = ui.askForCmd();
 
         System.out.println("Expected: " + commandStr);
-        System.out.println("Actual: " + testCmd.getType() + " " + testCmd.getFilepath());
+        System.out.println("Actual: " + testCmd.getCmdType() + " " + testCmd.getArgument(0));
 
         assertAll("Testing all variables",
-                () -> assertEquals(commandType, testCmd.getType()),
-                () -> assertEquals(filepath, testCmd.getFilepath())
+                () -> assertEquals(CmdType.LOAD_SPREADSHEET, testCmd.getCmdType()),
+                () -> assertEquals(filepath, testCmd.getArgument(0))
         );
     }
 
@@ -102,14 +99,14 @@ class UITest {
         System.setIn(in);
 
         UI ui = new UI();
-        SCmd testCmd = (SCmd) ui.askForCmd();
+        Cmd testCmd = ui.askForCmd();
 
         System.out.println("Expected: " + commandStr);
-        System.out.println("Actual: " + testCmd.getType() + " " + testCmd.getFilepath());
+        System.out.println("Actual: " + testCmd.getCmdType() + " " + testCmd.getArgument(0));
 
         assertAll("Testing all variables",
-                () -> assertEquals(commandType, testCmd.getType()),
-                () -> assertEquals(filepath, testCmd.getFilepath())
+                () -> assertEquals(CmdType.SAVE_SPREADSHEET, testCmd.getCmdType()),
+                () -> assertEquals(filepath, testCmd.getArgument(0))
         );
     }
 }
