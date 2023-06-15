@@ -11,7 +11,6 @@ public class FileManager {
     public void loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet) throws FileNotFoundException {
         File file = new File(filepath);
         Scanner sc = new Scanner(file);
-        ContentFactory cf = new ContentFactory();
 
         int row = 0;
         while (sc.hasNextLine()) {
@@ -21,7 +20,7 @@ public class FileManager {
 
             for(int col = 0; col < cellContents.length; col++) {
                 if(cellContents[col] != "") {
-                    Content newContent = cf.createContent(cellContents[col]);
+                    Content newContent = ContentFactory.createContent(cellContents[col]);
                     targetSpreadsheet.updateContent(new Coordinate(row, col), newContent);
                 }
             }

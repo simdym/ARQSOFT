@@ -28,22 +28,25 @@ public class Controller {
     }
 
     public void run() {
-        Spreadsheet ss = null;
-        Cmd cmd = null;
-
         while(true) {
+            Cmd cmd = null;
             try {
                 cmd = ui.askForCmd();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
             processUserCommand(cmd);
+            ui.displaySpreadsheet(spreadsheet);
         }
 
     }
     private void processUserCommand(Cmd cmd){
+        if(cmd == null) {
+            return;
+        }
         switch (cmd.getCmdType()) {
             case RUN_FROM_FILE:
+                System.out.println("Running commands from file: " + cmd.getArgument(0) + "...");
                 try {
                     runCommandsFromFile(cmd.getArgument(0));
                 } catch (Exception e) {
@@ -51,12 +54,15 @@ public class Controller {
                 }
                 break;
             case CREATE_SPREADSHEET:
+                System.out.println("Creating new spreadsheet...");
                 createNewSpreadsheet();
                 break;
             case EDIT_CELL:
+                System.out.println("Updating cell " + cmd.getArgument(0) + " with new content: " + cmd.getArgument(1) + "...");
                 modifyCellContent(cmd.getArgument(0), cmd.getArgument(1));
                 break;
             case LOAD_SPREADSHEET:
+                System.out.println("Loading spreadsheet from file: " + cmd.getArgument(0) + "...");
                 try {
                     loadExistingSpreadsheet(cmd.getArgument(0));
                 } catch (Exception e) {
@@ -64,12 +70,14 @@ public class Controller {
                 }
                 break;
             case SAVE_SPREADSHEET:
+                System.out.println("Saving spreadsheet to file: " + cmd.getArgument(0) + "...");
                 try {
                     saveSpreadsheet(cmd.getArgument(0));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 break;
+            default:
         }
     }
 

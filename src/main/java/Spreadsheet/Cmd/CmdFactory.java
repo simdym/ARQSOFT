@@ -33,10 +33,6 @@ public class CmdFactory {
 
         Cmd command;
 
-        if (cmdParts.length > 3) {
-            throw new CommandFormatException("The command does not follow the expected format");
-        }
-
         switch (cmdTypeStr) {
             case "RF":
                 if (cmdParts.length != 2) {
