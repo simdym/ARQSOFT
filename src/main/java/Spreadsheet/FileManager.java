@@ -44,7 +44,7 @@ public class FileManager {
                     Content content = originSpreadsheet.getContent(new Coordinate(row, col));
                     String stringContent = "";
                     if (content != null) {
-                        stringContent = String.valueOf(content.getValue().getValue());
+                        stringContent = String.valueOf(content.getContent());
                     }
                     // Append to columnString
                     columnString.append(stringContent).append(";");
