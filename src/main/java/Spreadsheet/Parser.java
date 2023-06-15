@@ -3,16 +3,25 @@ import Spreadsheet.Tokenizer.Token;
 import Spreadsheet.Exceptions.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.List;
 public class Parser {
 
         private ArrayList<Integer> savedTokens;
+        private LinkedList<Token> tokens;
         //private Spreadsheet spreadsheet
         public Parser() {
             savedTokens = new ArrayList<>();
             //this.spreadsheet = spreadsheet;
         }
 
-        public void parse(LinkedList<Token> tokens)  {
+        public void setTokens(LinkedList<Token> tokens) {
+            this.tokens = tokens;
+        }
+        LinkedList<Token> getParsedTokens() {
+            return this.tokens;
+        }
+
+        public void parse()  {
             checkBalancedParenthesis(tokens);
             savedTokens.clear();
             if (tokens.get(0).getTokenType() == Tokenizer.MULTDIV || tokens.get(0).getTokenType() == Tokenizer.PLUSMINUS || tokens.get(0).getTokenType() == Tokenizer.CLOSE_BRACKET) {
@@ -103,6 +112,14 @@ public class Parser {
 
 
     }
+    /*
+    public List<Cell> getDependentCells(Cell cell){
+        List<Cell> dependentCells = new ArrayList<>();
+        for (Cell c : cell.getCellsThatDependOnMe()){
+            dependentCells.add(c);
+        }
+        return dependentCells;
+    }*/
 
 }
 

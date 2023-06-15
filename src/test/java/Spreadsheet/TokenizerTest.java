@@ -16,18 +16,20 @@ class TokenizerTest {
 
 
         tokenizer.tokenize("8-MIN(C4;SUM(MIN(1;5);5);AVG(1;MAX(3;1));D5)-D4");  // result 46
-
+        tokenizer.tokenize("=SUM(1;2)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.getTokenString() );}
         Parser parser = new Parser();
-
-        parser.parse(tokenizer.getTokens());
+        parser.setTokens(tokenizer.getTokens());
+        parser.parse();
+        LinkedList<Tokenizer.Token> parsedTokens = parser.getParsedTokens();
         PostFixGenerator postFixGenerator = new PostFixGenerator();
 
-        LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
+        LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(parsedTokens);
         //
 
-        //FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
-        LinkedList<FormulaComponent> formulaTokens = FormulaComponentFabricator.fabricateComponentList(postfixTokens, spreadsheet);
+        FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
+        formulaCompFabr.setSpreadsheet(spreadsheet);
+        LinkedList<FormulaComponent> formulaTokens =formulaCompFabr.fabricateComponentList(postfixTokens);
 
         PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
         double result = postFixEvaluator.evaluatePostfix(formulaTokens);
@@ -72,7 +74,7 @@ class TokenizerTest {
     }
 
     @Test
-    void testoFormulaCompoonentFabricator(){
+    void testFormulaComponentFabricator(){
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
 
@@ -86,14 +88,14 @@ class TokenizerTest {
         //tokenizer.tokenize("C4");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.getTokenString() );}
         Parser parser = new Parser();
-
-        parser.parse(tokenizer.getTokens());
+        parser.setTokens(tokenizer.getTokens());
+        parser.parse();
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         for (Tokenizer.Token tok : postfixTokens) {System.out.println("" + tok.getTokenString() );}
 
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
-        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens, spreadsheet);
+        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
         for (FormulaComponent tok : formulaTokens) {System.out.println(tok.getClass());}
 
 
