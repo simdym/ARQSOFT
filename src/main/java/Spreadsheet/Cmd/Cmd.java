@@ -12,7 +12,7 @@ public class Cmd {
         return cmdType;
     }
 
-    public String[] getArguments() {
-        return arguments;
+    public String getArgument(int index) {
+        return arguments[index];
     }
 }
