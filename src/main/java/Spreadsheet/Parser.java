@@ -24,56 +24,66 @@ public class Parser {
                 int num = tok.getTokenType();
 
                 if (num == Tokenizer.CLOSE_BRACKET) {
-                    if (!savedTokens.contains(Tokenizer.OPEN_BRACKET) && !savedTokens.contains(Tokenizer.FUNCTION)  ) {
+                    if (!savedTokens.contains(Tokenizer.OPEN_BRACKET) && !savedTokens.contains(Tokenizer.FUNCTION)) {
                         throw new ParserException(
-                                "Illegal syntax: unmatched parenthesis");
+                                "IllegalGrammar: unmatched parenthesis");
                     } else if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.MULTDIV) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.PLUSMINUS))) {
                         throw new ParserException(
-                                "Illegal syntax: an operator cannot be followed by a closing parenthesis");}
-                    else if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON) )) {
+                                "IllegalGrammar: an operator cannot be followed by a closing parenthesis");
+                    } else if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON))) {
                         throw new ParserException(
-                                "Illegal syntax: a semicolon must be followed by another argument");
-                    } else if(savedTokens.contains(Tokenizer.FUNCTION)){
+                                "IllegalGrammar: a semicolon must be followed by another argument");
+                    } else if (savedTokens.contains(Tokenizer.FUNCTION)) {
                         ArrayList<Token> functionArguments = new ArrayList<>();
 
                     }
-                }
-
-                else {
-                    if (num == Tokenizer.PLUSMINUS || num == Tokenizer.MULTDIV ) {
-                        if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.FUNCTION) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.RANGE || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON)))) {
+                } else if (num == Tokenizer.FUNCTION || num == Tokenizer.OPEN_BRACKET) {
+                        if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.NUMBER) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.RANGE || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.CELL)))) {
                             throw new ParserException(
-                                    "Illegal syntax: No operators are allowed inside a function ");}
 
+                                    "IllegalGrammar: Two operands or an operand and parenthesis can't be directly followed by each other ");
+                        }
+                    } else {
+                        if (num == Tokenizer.PLUSMINUS || num == Tokenizer.MULTDIV) {
+                            if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.FUNCTION) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.RANGE || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON)))) {
+                                throw new ParserException(
 
-                    }
-                    else if (num == Tokenizer.SEMICOLON) {
-                        if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.MULTDIV) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.PLUSMINUS))) {
+                                        "IllegalGrammar: No operators are allowed inside a function ");
+                            }
+
+                        } else if (num == Tokenizer.SEMICOLON) {
+                            if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.MULTDIV) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.PLUSMINUS))) {
+                                throw new ParserException(
+                                        "IllegalGrammar: A semicolon must separate cells, ranges or numbers ");
+                            }
+                        }
+                        else if (num == Tokenizer.CELL || num == Tokenizer.RANGE || num == Tokenizer.NUMBER) {
+                            if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.CELL) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.RANGE || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.NUMBER )))) {
+                                throw new ParserException(
+                                        "IllegalGrammar: Range, Cell and Numbers must be separated by operators or semicolons");
+                            }
+                        }
+                        if ((!savedTokens.isEmpty()) && (savedTokens.get(savedTokens.size() - 1) == num)) { // ...repeated tokens are not allowed
                             throw new ParserException(
-                                    "Illegal syntax: A semicolon must separate cells, ranges or numbers ");
+                                    "IllegalGrammar: repeated tokens");
+                        } else if (num == Tokenizer.CELL) {
+                            // check that the cells exist; if they don't, raise an exception
+                            String coordinates = tok.getTokenString();
+                        } else if (num == Tokenizer.RANGE) {
+                            String range = tok.getTokenString();
+                            Coordinate coord1 = new Coordinate(range.split(":")[0]);
+                            Coordinate coord2 = new Coordinate(range.split(":")[1]);
+
+                            if (coord1.getCol() > coord2.getCol() || coord1.getRow() > coord2.getRow()) {
+                                throw new ParserException("Invalid coordinates: Invalid order of range");
+                            }
+
+
                         }
                     }
-                    if ((!savedTokens.isEmpty()) && (savedTokens.get(savedTokens.size() - 1) == num)) { // ...repeated tokens are not allowed
-                        throw new ParserException(
-                                "Illegal syntax: repeated tokens");
-                    } else if (num == Tokenizer.CELL) {
-                        // check that the cells exist; if they don't, raise an exception
-                        String coordinates = tok.getTokenString();
-                    } else if (num == Tokenizer.RANGE) {
-                        String range = tok.getTokenString();
-                        Coordinate coord1 = new Coordinate(range.split(":")[0]);
-                        Coordinate coord2 = new Coordinate(range.split(":")[1]);
-
-                        if (coord1.getCol()>coord2.getCol()|| coord1.getRow()>coord2.getRow()) {
-                            throw new  ParserException("Invalid coordinates: Invalid order of range");
-                        }
-
-
-                    }
+                    savedTokens.add(num); // save token
                 }
-                savedTokens.add(num); // save token
             }
-        }
         public void checkBalancedParenthesis(LinkedList<Token> tokens){
             int openBrackets = 0;
             for (Token tok : tokens) {

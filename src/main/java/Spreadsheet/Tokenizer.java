@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
-    public static final int EPSILON = 12;
     public static final int PLUSMINUS = 4;
     public static final int SEMICOLON = 10;
     public static final int MULTDIV = 5;
@@ -16,7 +15,6 @@ public class Tokenizer {
     public static final int CLOSE_BRACKET = 3;
     public static final int NUMBER = 6;
     public static final int CELL= 8;
-
     public static final int RANGE = 7;
     private class TokenInfo {
         public final Pattern regex;
@@ -35,7 +33,7 @@ public class Tokenizer {
     public Tokenizer() {
         tokenInfos = new LinkedList<TokenInfo>();
         tokens = new LinkedList<Token>();
-        add( "\\b(SUM\\(|MAX\\(|MIN\\(|AVG\\()", 1); // function name
+        add("(SUM\\(|MAX\\(|MIN\\(|AVG\\()", 1); // function name
         add("\\(", 2); // open bracket
         add("\\)", 3); // close bracket
         add("[\\+\\-]", 4); // operator
@@ -81,35 +79,37 @@ public class Tokenizer {
         String s = new String(str);
         s = s.replaceAll("\\s", "");
         tokens.clear();
-        while (!s.equals("")) {
+
+        int currentPosition = 0;
+        while (currentPosition < s.length()) {
             boolean match = false;
+            TokenInfo longestMatchInfo = null;
+            String longestMatch = "";
+
             for (TokenInfo info : tokenInfos) {
-                Matcher m = info.regex.matcher(s);
-                if (m.find()) {
+                Matcher m = info.regex.matcher(s.substring(currentPosition));
+                if (m.find() && m.start() == 0 && m.group().length() > longestMatch.length()) {
+                    longestMatch = m.group();
+                    longestMatchInfo = info;
                     match = true;
-                    String tok = m.group().trim();
-                    tokens.add(new Token(info.token, tok));
-                    s = m.replaceFirst("");
-                    break;
                 }
             }
-            if (!match) throw new ParserException(
-                    "Unexpected character in input: " + s);
+
+            if (match) {
+                tokens.add(new Token(longestMatchInfo.token, longestMatch.trim()));
+                currentPosition += longestMatch.length();
+            } else {
+                throw new ParserException("Unexpected character in input: " + s.charAt(currentPosition));
+            }
         }
     }
+
 
     public LinkedList<Token> getTokens() {
         return tokens;
     }
 
-    public static void main(String[] args) {
-        Tokenizer tokenizer = new Tokenizer();
-        tokenizer.tokenize("sin(x) * (1 + var_12)");
 
-        for (Tokenizer.Token tok : tokenizer.getTokens()) {
-            System.out.println("" + tok.token + " " + tok.sequence);
-        }
-    }
 
     public class ParserException extends RuntimeException {
         public ParserException(String message) {
