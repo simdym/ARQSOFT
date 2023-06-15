@@ -1,25 +1,26 @@
 package Spreadsheet;
 import java.util.LinkedList;
-import Spreadsheet.Coordinate;
-import Spreadsheet.Exceptions.InvalidCellIDException;
-import Spreadsheet.PostFixGenerator;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerTest {
     @Test
-    void testTokenizeFun() {
+    void testCalculateFormula() {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
+
         spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
         spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
         spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("3"));
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("SUM(2;3;SUM(1;50);AVG(1;MAX(3;1)))+9-AVG(1;3)+(3+5)*3-4/2");
+        tokenizer.tokenize("SUM(2;3;SUM(C4:D5);AVG(1;MAX(3;1)))+9-AVG(1;3)+(3+5)*3-4/2");  // result 46
+        //tokenizer.tokenize("C4");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
+        Parser parser = new Parser();
 
+        parser.parse(tokenizer.getTokens());
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         //
@@ -55,8 +56,19 @@ class TokenizerTest {
         System.out.println(result);
 
     }
+    @Test
+    void testParse(){
+       Tokenizer tokenizer = new Tokenizer();
+        Spreadsheet spreadsheet = new Spreadsheet();
+        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("8"));
+        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("1"));
+
+        tokenizer.tokenize("(2-7)*8");
+        LinkedList<Tokenizer.Token> tokenList = tokenizer.getTokens();
 
 
+
+    }
 
 
 
