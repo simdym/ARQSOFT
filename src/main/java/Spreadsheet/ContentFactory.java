@@ -4,7 +4,7 @@ public class ContentFactory {
 
     public ContentFactory() {}
 
-    public Content createContent(String contentStr) {
+    public static Content createContent(String contentStr) {
         Content resContent = null;
         if(isFormula(contentStr)) {
             // Formula
@@ -21,11 +21,11 @@ public class ContentFactory {
         return resContent;
     }
 
-    private boolean isFormula(String value) {
+    private static boolean isFormula(String value) {
         return value.charAt(0) == '=';
     }
 
-    private boolean isNumberString(String value) {
+    private static boolean isNumberString(String value) {
         try {
             Double.parseDouble(value);
         }
