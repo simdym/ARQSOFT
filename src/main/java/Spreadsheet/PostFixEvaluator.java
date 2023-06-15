@@ -14,7 +14,7 @@ public class PostFixEvaluator {
             Stack<Double> operandStack = new Stack<>();
             for (FormulaComponent fComp : postFixExpression){
                 if(fComp instanceof Operand){
-                    double operandValue = ((Operand) fComp).getValue(spreadsheet);
+                    double operandValue = ((Operand) fComp).getDoubleValue();
                     operandStack.push(operandValue);
                 }
                 if (fComp instanceof Operator){

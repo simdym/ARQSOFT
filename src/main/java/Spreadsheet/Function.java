@@ -2,7 +2,7 @@ package Spreadsheet;
 
 import java.util.LinkedList;
 
-public abstract class Function implements Argument {
+public abstract class Function implements Argument,Operand{
     protected LinkedList<Argument> arguments;
 
     public Function() {

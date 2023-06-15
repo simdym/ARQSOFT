@@ -1,6 +1,6 @@
 package Spreadsheet;
 
-public class NumericalValue implements Value ,Argument{
+public class NumericalValue implements Value ,Argument, Operand{
     private final double value;
 
     NumericalValue(double value) {

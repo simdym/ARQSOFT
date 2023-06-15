@@ -15,7 +15,7 @@ class TokenizerTest {
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("SUM(5;6;MAX(C4:D5);AVG(1;MIN(3;1)))-4*(10-6)");  // result 46
+        tokenizer.tokenize("8-SUM(2;3;SUM(C4:D5);AVG(1;MAX(3;1)))-7*(8-2)");  // result 46
         //tokenizer.tokenize("C4");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
         Parser parser = new Parser();
@@ -26,7 +26,7 @@ class TokenizerTest {
         //
 
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
-        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
+        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens, spreadsheet);
 
         PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
         double result = postFixEvaluator.evaluatePostfix(formulaTokens,spreadsheet);
@@ -51,9 +51,9 @@ class TokenizerTest {
         tokenizer.tokenize("SUM(C4:C5)");
         PostFixGenerator postFixGenerator = new PostFixGenerator();
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
-        Operand operand = new Operand(postfixTokens);
-        double result = operand.getValue(spreadsheet);
-        System.out.println(result);
+        //Operand operand = new Operand(postfixTokens);
+        //double result = operand.getValue(spreadsheet);
+        //System.out.println(result);
 
     }
     @Test
@@ -66,6 +66,34 @@ class TokenizerTest {
         tokenizer.tokenize("(2-7)*8");
         LinkedList<Tokenizer.Token> tokenList = tokenizer.getTokens();
 
+
+
+    }
+
+    @Test
+    void testoFormulaCompoonentFabricator(){
+        Tokenizer tokenizer = new Tokenizer();
+        Spreadsheet spreadsheet = new Spreadsheet();
+
+        spreadsheet.updateContent(new Coordinate("C4"), new NumericalContent("1"));
+        spreadsheet.updateContent(new Coordinate("C5"), new NumericalContent("2"));
+        spreadsheet.updateContent(new Coordinate("D4"), new NumericalContent("3"));
+        spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
+
+
+        tokenizer.tokenize("3+SUM(5;6;MAX(C4:D5);MIN(1;3))-(8+9)*4");  // result 46
+        //tokenizer.tokenize("C4");
+        //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.getTokenString() );}
+        Parser parser = new Parser();
+
+        parser.parse(tokenizer.getTokens());
+        PostFixGenerator postFixGenerator = new PostFixGenerator();
+        LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
+        for (Tokenizer.Token tok : postfixTokens) {System.out.println("" + tok.getTokenString() );}
+
+        FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
+        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens, spreadsheet);
+        for (FormulaComponent tok : formulaTokens) {System.out.println(tok.getClass());}
 
 
     }

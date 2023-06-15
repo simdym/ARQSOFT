@@ -1,10 +1,10 @@
 package Spreadsheet;
 import java.util.LinkedList;
 import java.util.Collections;
-public class Operator extends FormulaComponent{
+public class Operator implements FormulaComponent{
     private Tokenizer.Token operatorToken;
     public Operator(Tokenizer.Token operatorToken){
-        super(new LinkedList<>(Collections.singletonList(operatorToken)));
+        super();
         this.operatorToken = operatorToken;
     }
 
