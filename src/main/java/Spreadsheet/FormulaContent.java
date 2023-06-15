@@ -41,6 +41,9 @@ public class FormulaContent extends Content {
             this.postfixExpression = new LinkedList<Tokenizer.Token>(postfixExpression);
         }
 
+        public List<Cell> getDependentCellsList() {
+            return this.dependentCells;
+        }
 
 
 }

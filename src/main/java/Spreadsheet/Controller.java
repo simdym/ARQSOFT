@@ -11,7 +11,7 @@ import Spreadsheet.Exceptions.ParserException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.List;
 public class Controller {
     private Spreadsheet spreadsheet;
     private UI ui;
@@ -96,20 +96,18 @@ public class Controller {
     }
     private void modifyCellContent(String cellId, String newValue) {
         Coordinate cellCoor = new Coordinate(cellId);
-
-         /*
-
-        if (cell != null) {
-            previousContent = cell.getContent();
+        Cell oldcell = spreadsheet.getCell(cellCoor);
+        Content previousContent;
+        if (oldcell != null) {
+            previousContent = oldcell.getContent();
         } else {
-            return; // Exit the method or do appropriate error handling
-        }*/
+            previousContent = null;// Exit the method or do appropriate error handling
+        }
         Content newContent = ContentFactory.createContent(newValue);
-        Cell cell = spreadsheet.getCell(cellCoor);
         spreadsheet.updateContent(cellCoor, newContent);
-        Cell cell2 = spreadsheet.getCell(cellCoor);
-        Content currentContent = cell2.getContent();
-        Content previousContent = new NumericalContent("0");
+        Cell cell= spreadsheet.getCell(cellCoor);
+        Content currentContent = cell.getContent();
+
         if (currentContent != null && (currentContent instanceof FormulaContent)) {
 
             FormulaContent formula = (FormulaContent) currentContent;
@@ -161,21 +159,21 @@ public class Controller {
         if (previousContent != null) {
             if (previousContent instanceof FormulaContent) {
                 FormulaContent previousFormula = (FormulaContent) previousContent;
-                /*List<Cell> previousDependencies = previousFormula.getDependentCells();
+                List<Cell> previousDependencies = previousFormula.getDependentCells();
 
                 for (Cell dependentCell : previousDependencies) {
-                    dependentCell.removeCellReference(cell);
-                }*/
+                    //dependentCell.removeCellReference(cell);
+                }
             }
         }
 
         if (currentContent instanceof FormulaContent) {
             FormulaContent currentFormula = (FormulaContent) currentContent;
-            /*List<Cell> currentDependencies = currentFormula.getDependentCells();
+            List<Cell> currentDependencies = currentFormula.getDependentCells();
 
             for (Cell dependentCell : currentDependencies) {
-                dependentCell.addCellReference(cell);
-            }*/
+               // dependentCell.addCellReference(cell);
+            }
         }
         /*
         LinkedList<Cell> references = new LinkedList<Cell>();
