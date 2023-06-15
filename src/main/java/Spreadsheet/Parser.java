@@ -28,13 +28,30 @@ public class Parser {
                                 "Illegal syntax: unmatched parenthesis");
                     } else if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.MULTDIV) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.PLUSMINUS))) {
                         throw new ParserException(
-                                "Illegal syntax");
+                                "Illegal syntax: an operator cannot be followed by a closing parenthesis");}
+                    else if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON) )) {
+                        throw new ParserException(
+                                "Illegal syntax: a semicolon must be followed by another argument");
                     } else if(savedTokens.contains(Tokenizer.FUNCTION)){
                         ArrayList<Token> functionArguments = new ArrayList<>();
 
                     }
                 }
+
                 else {
+                    if (num == Tokenizer.PLUSMINUS || num == Tokenizer.MULTDIV ) {
+                        if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.FUNCTION) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.RANGE || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.SEMICOLON)))) {
+                            throw new ParserException(
+                                    "Illegal syntax: No operators are allowed inside a function ");}
+
+
+                    }
+                    else if (num == Tokenizer.SEMICOLON) {
+                        if ((!savedTokens.isEmpty()) && ((savedTokens.get(savedTokens.size() - 1) == Tokenizer.MULTDIV) || (savedTokens.get(savedTokens.size() - 1) == Tokenizer.PLUSMINUS))) {
+                            throw new ParserException(
+                                    "Illegal syntax: A semicolon must separate cells, ranges or numbers ");
+                        }
+                    }
                     if ((!savedTokens.isEmpty()) && (savedTokens.get(savedTokens.size() - 1) == num)) { // ...repeated tokens are not allowed
                         throw new ParserException(
                                 "Illegal syntax: repeated tokens");

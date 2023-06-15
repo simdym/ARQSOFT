@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class Tokenizer {
     public static final int EPSILON = 12;
     public static final int PLUSMINUS = 4;
+    public static final int SEMICOLON = 10;
     public static final int MULTDIV = 5;
     public static final int FUNCTION = 1;
     public static final int OPEN_BRACKET = 2;
