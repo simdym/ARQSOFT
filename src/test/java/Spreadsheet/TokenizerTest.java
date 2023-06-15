@@ -15,7 +15,7 @@ class TokenizerTest {
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("SUM(2;3;SUM(C4:D5);AVG(1;MAX(3;1)))");  // result 46
+        tokenizer.tokenize("SUM(5;6;MAX(C4:D5);AVG(1;MIN(3;1)))-4*(10-6)");  // result 46
         //tokenizer.tokenize("C4");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.token + " " + tok.sequence);}
         Parser parser = new Parser();

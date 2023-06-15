@@ -67,12 +67,15 @@ public class Tokenizer {
             this.token = token;
             this.sequence = sequence;
         }
+        public int getTokenType() {
+            return token;
+        }
+        public String getTokenString() {
+            return sequence;
+        }
     }
 
-   /* public Token getToken(){
-        //implement, to makethe int and string private
 
-    }*/
 
     public void tokenize(String str) {
         String s = new String(str);

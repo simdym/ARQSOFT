@@ -13,6 +13,7 @@ public class Parser {
         }
 
         public void parse(LinkedList<Token> tokens)  {
+            checkBalancedParenthesis(tokens);
             savedTokens.clear();
             if (tokens.get(0).token == Tokenizer.MULTDIV || tokens.get(0).token == Tokenizer.PLUSMINUS || tokens.get(0).token == Tokenizer.CLOSE_BRACKET) {
                 throw new ParserException(
@@ -73,6 +74,26 @@ public class Parser {
                 savedTokens.add(num); // save token
             }
         }
+        public void checkBalancedParenthesis(LinkedList<Token> tokens){
+            int openBrackets = 0;
+            for (Token tok : tokens) {
+                int num = tok.getTokenType();
+                if (num == Tokenizer.OPEN_BRACKET || num == Tokenizer.FUNCTION ){
+                    openBrackets++;
+                }
+                if (num == Tokenizer.CLOSE_BRACKET ){
+                    openBrackets--;
+                }
+                if (openBrackets<0){
+                    throw new ParserException("Illegal parenthesis");
+                }
+
+            }
+            if (openBrackets!=0){throw new ParserException("Illegal parenthesis: unclosed parenthesis");}
+
+
+    }
+
 }
 
 
