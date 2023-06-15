@@ -10,7 +10,7 @@ public class ContentFactory {
             // Formula
 
             //TODO: finish FormulaContent
-            resContent = new FormulaContent();
+            resContent = new FormulaContent(contentStr);
         } else {
             if(isNumberString(contentStr)) {
                 resContent = new NumericalContent(contentStr);

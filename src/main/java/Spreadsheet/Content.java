@@ -14,4 +14,5 @@ public abstract class Content {
 
     public void setContent(String newContent) {content = newContent;}
     public void setValue(Value newValue) {value = newValue;}
+
 }

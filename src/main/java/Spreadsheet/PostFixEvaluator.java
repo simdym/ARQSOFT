@@ -4,12 +4,13 @@ import java.util.LinkedList;
 import Spreadsheet.Tokenizer;
 import Spreadsheet.Operand;
 import java.util.Collections;
+import Spreadsheet.Exceptions.EvaluationException;
 
 
 public class PostFixEvaluator {
     public PostFixEvaluator() {}
     //has to have a spreadsheet evaluator
-    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression, Spreadsheet spreadsheet) {
+    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression) {
 
             Stack<Double> operandStack = new Stack<>();
             for (FormulaComponent fComp : postFixExpression){
@@ -26,7 +27,9 @@ public class PostFixEvaluator {
             }
             double result = operandStack.pop();
         if (!operandStack.isEmpty()) {
-            // throw exception for non-empty stack
+            throw new EvaluationException("Evaluation error: Operand stack is not empty");
         }
-            return result;
-    }}
+        return result;
+        }
+
+    }
