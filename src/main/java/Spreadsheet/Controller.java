@@ -1,6 +1,10 @@
 package Spreadsheet;
-
 import Spreadsheet.Cmd.Cmd;
+import Spreadsheet.Exceptions.EvaluationException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedList;
 import Spreadsheet.Cmd.CmdFactory;
 
 import java.io.FileNotFoundException;
@@ -11,6 +15,11 @@ public class Controller {
     private Spreadsheet spreadsheet;
     private UI ui;
     private FileManager fileManager;
+
+    private FormulaComponentFabricator formulaComponentFabricator;
+    private PostFixEvaluator postfixEvaluator;
+
+    private PostFixGenerator postfixGenerator;
 
     public Controller() {
         spreadsheet = new Spreadsheet();
@@ -86,7 +95,25 @@ public class Controller {
         spreadsheet.updateContent(cellCoor, newContent);
     }
 
-    //private double computeFormula(Cell cell){}
+    private void updateCellValue(Cell cellToModify) {
+        Content content = cellToModify.getContent();
+        if (content != null && content instanceof FormulaContent) {
+            FormulaContent formula = (FormulaContent) content;
+            LinkedList<Tokenizer.Token> postfixExpression = formula.getPostfixExpression();
+            LinkedList<FormulaComponent> formulaCompExpression = formulaComponentFabricator.fabricateComponentList(postfixExpression, spreadsheet);
+
+            try {
+                double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
+                content.setValue(new NumericalValue(result));
+
+            } catch (EvaluationException ex) {
+                String result2 ="NaN";
+                content.setValue(new TextValue(result2));
+            }
+
+        }
+
+    }
     private void deleteContent(String cellId){}
     //public Content retrieveCellContent(Coordinate coordinate){}
 
@@ -94,3 +121,4 @@ public class Controller {
 
 
 }
+

@@ -7,7 +7,7 @@ public class FormulaComponentFabricator {
     private int i;
     public FormulaComponentFabricator(){}
 
-    public LinkedList<FormulaComponent> fabricateComponentList(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet) {
+    public static LinkedList<FormulaComponent> fabricateComponentList(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet) {
         LinkedList<FormulaComponent> componentList = new LinkedList<>();
         LinkedList<Tokenizer.Token> functionArgumentTokens = new LinkedList<>();
         int openFunction = 0;
@@ -40,7 +40,7 @@ public class FormulaComponentFabricator {
         return componentList;
     }
 
-    public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList,Spreadsheet spreadsheet, int ii) {
+    public static Function functionGenerator(LinkedList<Tokenizer.Token> tokenList,Spreadsheet spreadsheet, int ii) {
         Tokenizer.Token functionToken = tokenList.getFirst();
         Function function = Function.FunctionFactory.createFunction(functionToken.getTokenString());
         ii=1;
@@ -75,7 +75,7 @@ public class FormulaComponentFabricator {
         }
         return function;
     }
-    public int findMatchingClosingParenthesis(LinkedList<Tokenizer.Token> tokenList, int i) {
+    public static int findMatchingClosingParenthesis(LinkedList<Tokenizer.Token> tokenList, int i) {
         int nests = 0;
         int j = i;
 

@@ -22,14 +22,15 @@ class TokenizerTest {
 
         parser.parse(tokenizer.getTokens());
         PostFixGenerator postFixGenerator = new PostFixGenerator();
+
         LinkedList<Tokenizer.Token> postfixTokens = postFixGenerator.generatePostfix(tokenizer.getTokens());
         //
 
-        FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
-        LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens, spreadsheet);
+        //FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
+        LinkedList<FormulaComponent> formulaTokens = FormulaComponentFabricator.fabricateComponentList(postfixTokens, spreadsheet);
 
         PostFixEvaluator postFixEvaluator = new PostFixEvaluator();
-        double result = postFixEvaluator.evaluatePostfix(formulaTokens,spreadsheet);
+        double result = postFixEvaluator.evaluatePostfix(formulaTokens);
         System.out.println("Result: "+result);
        }
     @Test
