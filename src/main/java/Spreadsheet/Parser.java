@@ -1,6 +1,8 @@
 package Spreadsheet;
 import Spreadsheet.Tokenizer.Token;
 import Spreadsheet.Exceptions.*;
+import org.w3c.dom.ranges.Range;
+
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ public class Parser {
 
         private ArrayList<Integer> savedTokens;
         private LinkedList<Token> tokens;
-        //private Spreadsheet spreadsheet
+        private Spreadsheet spreadsheet;
         public Parser() {
             savedTokens = new ArrayList<>();
             //this.spreadsheet = spreadsheet;
@@ -112,15 +114,32 @@ public class Parser {
 
 
     }
-    /*
-    public List<Cell> getDependentCells(Cell cell){
-        List<Cell> dependentCells = new ArrayList<>();
-        for (Cell c : cell.getCellsThatDependOnMe()){
-            dependentCells.add(c);
-        }
-        return dependentCells;
-    }*/
-
+    public void setSpreadsheet(Spreadsheet spreadsheet){
+        this.spreadsheet = spreadsheet;
+    }
+    public List<Cell> getCellDependencies(){
+        List<Cell> dependencies = new ArrayList<>();
+        for (Token tok : tokens) {
+            int num = tok.getTokenType();
+            if (num == Tokenizer.CELL){
+                String coordinates = tok.getTokenString();
+                Coordinate coord = new Coordinate(coordinates);
+                Cell cell = spreadsheet.getCell(coord);
+                dependencies.add(cell);
+            }
+            if (num == Tokenizer.RANGE){
+                String coordinateRange = tok.getTokenString();
+                Coordinate coord1 = new Coordinate(coordinateRange.split(":")[0]);
+                Coordinate coord2 = new Coordinate(coordinateRange.split(":")[1]);
+                CellRange range = new CellRange(coord1,coord2,spreadsheet);
+                LinkedList<Cell> cells = range.listOfCells();
+                for (Cell cell: cells){
+                    dependencies.add(cell);
+                }
+            }
+    }
+return dependencies;
+}
 }
 
 

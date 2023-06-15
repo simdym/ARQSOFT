@@ -44,6 +44,9 @@ public class FormulaContent extends Content {
         public List<Cell> getDependentCellsList() {
             return this.dependentCells;
         }
+        public void setDependentCellsList(List<Cell> dependentCellsParsed){
+            this.dependentCells = dependentCellsParsed ;
+        }
 
 
 }

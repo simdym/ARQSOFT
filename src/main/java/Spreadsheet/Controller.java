@@ -117,7 +117,6 @@ public class Controller {
         Content currentContent = cell.getContent();
 
         if (currentContent != null && (currentContent instanceof FormulaContent)) {
-
             FormulaContent formula = (FormulaContent) currentContent;
             try {
                 tokenizer.tokenize(formula.getContent());
@@ -126,28 +125,25 @@ public class Controller {
                 throw new ParserException(e.getMessage());
             }
             LinkedList<Tokenizer.Token> tokens = tokenizer.getTokens();
-
             try {
+                parser.setSpreadsheet(spreadsheet);
                 parser.setTokens(tokens);
                 parser.parse();
             } catch (ParserException e) {
                 formula.setValue(new TextValue("SYNTAX ERROR"));
                 throw new ParserException(e.getMessage());
             }
+            parser.setSpreadsheet(spreadsheet);
             LinkedList<Tokenizer.Token> parsedTokens = parser.getParsedTokens();
-
-            //List<Cell> dependencies = parser.getDependencies();
+            List<Cell> dependencies = parser.getCellDependencies();
             /*
             try {
                 this.checkCircularDependency(coordinate, dependencies);
             } catch (CircularDependencyException e) {
                 cell.setContent(previousContent);
                 throw new CircularDependencyException(e.getMessage());
-            }
-
-            formula.setDependentCells(dependencies);*/
-
-
+            }*/
+            formula.setDependentCells(dependencies);
             LinkedList<Tokenizer.Token> postfixExpression= postfixGenerator.generatePostfix(parsedTokens);
             formula.setPostfixExpression(postfixExpression);
             formulaComponentFabricator.setSpreadsheet(spreadsheet);
@@ -161,7 +157,7 @@ public class Controller {
                 String result2 ="NaN";
                 formula.setValue(new TextValue(result2));
             }
-
+        }
 
 
         if (previousContent != null) {
@@ -170,7 +166,7 @@ public class Controller {
                 List<Cell> previousDependencies = previousFormula.getDependentCells();
 
                 for (Cell dependentCell : previousDependencies) {
-                    //dependentCell.removeCellReference(cell);
+                    dependentCell.removeCellReference(cell);
                 }
             }
         }
@@ -180,24 +176,24 @@ public class Controller {
             List<Cell> currentDependencies = currentFormula.getDependentCells();
 
             for (Cell dependentCell : currentDependencies) {
-               // dependentCell.addCellReference(cell);
+                dependentCell.addCellReference(cell);
             }
         }
-        /*
-        LinkedList<Cell> references = new LinkedList<Cell>();
-        references.addAll(cell.getCellReferences());
 
+        LinkedList<Cell> references = new LinkedList<>();
+        references.addAll(cell.getCellReferences());
+        System.out.println("Updated cell has"+references.size()+"references");
         while (!references.isEmpty()) {
             Cell cellToUpdate = references.poll();
             references.addAll(cellToUpdate.getCellReferences());
             this.updateCellValue(cellToUpdate);
-        }*/
+        }
+
+
 
     }
-
-    }
-
     private void updateCellValue(Cell cellToModify) {
+        System.out.println("Updating cell ");
         Content content = cellToModify.getContent();
         if (content != null && content instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) content;
