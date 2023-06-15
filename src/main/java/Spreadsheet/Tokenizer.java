@@ -60,8 +60,8 @@ public class Tokenizer {
 
     public class Token {
 
-        public final int token;// modify to tokentype
-        public final String sequence;
+        private final int token;// modify to tokentype
+        private final String sequence;
         public Token(int token, String sequence) {
             super();
             this.token = token;

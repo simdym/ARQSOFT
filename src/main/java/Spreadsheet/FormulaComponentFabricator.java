@@ -11,7 +11,7 @@ public class FormulaComponentFabricator {
         LinkedList<Tokenizer.Token> functionArgumentTokens = new LinkedList<>();
         int openFunction = 0;
         for (Tokenizer.Token token : tokenList) {
-            int tokenType = token.token;
+            int tokenType = token.getTokenType();
 
             if (tokenType == 4 || tokenType == 5) {
                 Operator operator = new Operator(token);

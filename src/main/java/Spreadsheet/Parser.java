@@ -15,13 +15,13 @@ public class Parser {
         public void parse(LinkedList<Token> tokens)  {
             checkBalancedParenthesis(tokens);
             savedTokens.clear();
-            if (tokens.get(0).token == Tokenizer.MULTDIV || tokens.get(0).token == Tokenizer.PLUSMINUS || tokens.get(0).token == Tokenizer.CLOSE_BRACKET) {
+            if (tokens.get(0).getTokenType() == Tokenizer.MULTDIV || tokens.get(0).getTokenType() == Tokenizer.PLUSMINUS || tokens.get(0).getTokenType() == Tokenizer.CLOSE_BRACKET) {
                 throw new ParserException(
                         "Illegal grammar: a formula cannot begin with an operator or a right parenthesis");
             }
 
             for (Token tok : tokens) {
-                int num = tok.token;
+                int num = tok.getTokenType();
 
                 if (num == Tokenizer.CLOSE_BRACKET) {
                     if (!savedTokens.contains(Tokenizer.OPEN_BRACKET) && !savedTokens.contains(Tokenizer.FUNCTION)  ) {
@@ -58,9 +58,9 @@ public class Parser {
                                 "Illegal syntax: repeated tokens");
                     } else if (num == Tokenizer.CELL) {
                         // check that the cells exist; if they don't, raise an exception
-                        String coordinates = tok.sequence;
+                        String coordinates = tok.getTokenString();
                     } else if (num == Tokenizer.RANGE) {
-                        String range = tok.sequence;
+                        String range = tok.getTokenString();
                         Coordinate coord1 = new Coordinate(range.split(":")[0]);
                         Coordinate coord2 = new Coordinate(range.split(":")[1]);
 

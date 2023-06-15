@@ -10,8 +10,8 @@ public class PostFixGenerator {
         Stack<Tokenizer.Token> operatorStack = new Stack<>();
         int activefuns = 0;
         for (Tokenizer.Token token : tokenList) {
-            int num = token.token; // read integer-format token
-            String str = token.sequence; // string character read
+            int num = token.getTokenType(); // read integer-format token
+            String str = token.getTokenString(); // string character read
 
             if (num == 6 || num == 7 || num == 8) { // if read token is a number or operand
                 postfixList.add(token); // add Token to the queue
@@ -22,9 +22,9 @@ public class PostFixGenerator {
                 activefuns+=1;// push function token onto the operator stack
 
             } else if (num == 4 || num == 5) { // if read token is an operator
-                while (!operatorStack.isEmpty() && operatorStack.peek().token != 2 && operatorStack.peek().token != 10&&
-                        ((operatorStack.peek().token > num) ||
-                                (operatorStack.peek().token == num && isLeftAssociative(operatorStack.peek().sequence)))) {
+                while (!operatorStack.isEmpty() && operatorStack.peek().getTokenType() != 2 && operatorStack.peek().getTokenType() != 10&&
+                        ((operatorStack.peek().getTokenType() > num) ||
+                                (operatorStack.peek().getTokenType() == num && isLeftAssociative(operatorStack.peek().getTokenString())))) {
                     postfixList.add(operatorStack.pop());
                 }
                 operatorStack.push(token);
@@ -39,10 +39,10 @@ public class PostFixGenerator {
             } else if (num == 3) {
                 if (activefuns>0){postfixList.add(token);activefuns-=1;}// if read token is a right parenthesis
                 else {
-                    while (!operatorStack.isEmpty() && operatorStack.peek().token != 2 && operatorStack.peek().token != 1) {
+                    while (!operatorStack.isEmpty() && operatorStack.peek().getTokenType() != 2 && operatorStack.peek().getTokenType() != 1) {
                         postfixList.add(operatorStack.pop());
                     }
-                    if (operatorStack.peek().token == 1) {
+                    if (operatorStack.peek().getTokenType() == 1) {
                         postfixList.add(operatorStack.pop());
                     } else {
                         operatorStack.pop();

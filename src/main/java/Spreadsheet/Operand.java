@@ -14,18 +14,18 @@ public class Operand extends FormulaComponent {
     public double getValue(Spreadsheet spreadsheet){
         Tokenizer.Token token = operandTokens.getFirst();
         double value=0;
-        if (token.token==6){//if number
-            value = new NumericalValue(token.sequence).getDoubleValue();
+        if (token.getTokenType()==6){//if number
+            value = new NumericalValue(token.getTokenString()).getDoubleValue();
 
         }
-        else if (token.token==8) {//if cells
-            Coordinate coord = new Coordinate(token.sequence);
+        else if (token.getTokenType()==8) {//if cells
+            Coordinate coord = new Coordinate(token.getTokenString());
             Cell cell = spreadsheet.getCell(coord);
             value = cell.getDoubleValue();
 
         }
-        else if (token.token == 1){ //Then it's function
-            //for (Tokenizer.Token tok : operandTokens) {System.out.println("" + tok.token + " " + tok.sequence);}
+        else if (token.getTokenType() == 1){ //Then it's function
+            //for (Tokenizer.Token tok : operandTokens) {System.out.println("" + tok.token + " " + tok.getTokenString());}
             Function function = functionGenerator(operandTokens,spreadsheet);
             value = function.getDoubleValue();
         }
@@ -35,26 +35,26 @@ public class Operand extends FormulaComponent {
 
     public Function functionGenerator(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet) {
         Tokenizer.Token functionToken = tokenList.getFirst();
-        Function function = Function.FunctionFactory.createFunction(functionToken.sequence);
+        Function function = Function.FunctionFactory.createFunction(functionToken.getTokenString());
         int i = 1;
         while (i < tokenList.size()) {
             Tokenizer.Token token = tokenList.get(i);
-            if (token.token == 6) { // if number
-                Argument arg = new NumericalValue(token.sequence);
+            if (token.getTokenType() == 6) { // if number
+                Argument arg = new NumericalValue(token.getTokenString());
                 function.addArgument(arg);
-            } else if (token.token == 7) { // if range
-                String[] coordString = token.sequence.split(":");
+            } else if (token.getTokenType() == 7) { // if range
+                String[] coordString = token.getTokenString().split(":");
                 Coordinate coord1 = new Coordinate(coordString[0]);
                 Coordinate coord2 = new Coordinate(coordString[1]);
                 CellRange cellRange = new CellRange(coord1, coord2, spreadsheet);
                 for (Cell cell : cellRange.listOfCells()) {
                     function.addArgument(cell);
                 }
-            } else if (token.token == 8) { // if cell
-                Coordinate coord = new Coordinate(token.sequence);
+            } else if (token.getTokenType() == 8) { // if cell
+                Coordinate coord = new Coordinate(token.getTokenString());
                 Argument arg = spreadsheet.getCell(coord);
                 function.addArgument(arg);
-            } else if (token.token == 1) { // if another function
+            } else if (token.getTokenType() == 1) { // if another function
                 int nestedFunctionEndIndex = findMatchingClosingParenthesis(tokenList, i);
                 LinkedList<Tokenizer.Token> nestedTokens = new LinkedList<>(tokenList.subList(i, nestedFunctionEndIndex));
                 Argument arg = functionGenerator(nestedTokens, spreadsheet);
@@ -72,9 +72,9 @@ public class Operand extends FormulaComponent {
         int j = startIndex;
         while (j < tokenList.size()) {
             Tokenizer.Token token = tokenList.get(j);
-            if (token.token == 1) {
+            if (token.getTokenType() == 1) {
                 nests++;
-            } else if (token.token == 3) {
+            } else if (token.getTokenType() == 3) {
                 nests--;
                 if (nests == 0) {
                     break;

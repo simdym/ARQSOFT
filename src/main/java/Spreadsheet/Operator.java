@@ -10,7 +10,7 @@ public class Operator extends FormulaComponent{
 
     public double evaluateOperation(double operand1, double operand2) {
         double result = 0;
-        switch (operatorToken.sequence) {
+        switch (operatorToken.getTokenString()) {
             case "+":
                 result = operand1 + operand2;
                 break;
