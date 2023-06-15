@@ -42,10 +42,10 @@ class UITest {
         UI ui = new UI();
         Cmd testCmd = ui.askForCmd();
 
-        System.out.println("Expected: C");
-        System.out.println("Actual: " + testCmd.getType());
+        System.out.println("Expected: "+ CmdType.CREATE_SPREADSHEET);
+        System.out.println("Actual: " + testCmd.getCmdType());
 
-        assertEquals("C", testCmd.getType());
+        assertEquals(CmdType.CREATE_SPREADSHEET, testCmd.getCmdType());
     }
 
     @Test
