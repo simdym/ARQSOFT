@@ -1,7 +1,14 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Formula;
 
 import java.util.LinkedList;
-
+/**
+* Class function, which can implement argument and operand.
+ * It contains a list of arguments, and a method to add arguments to the list.
+ *
+ *Static class functionFactory to create new Function objects Sum(), Min(), etc. Depending on the string received.
+ *
+ * abstract double getDoubleValue which is implemented by each of the function subclasses: Sum, Min, Max and Average.
+ **/
 public abstract class Function implements Argument, Operand {
     protected LinkedList<Argument> arguments;
 
@@ -27,7 +34,6 @@ public abstract class Function implements Argument, Operand {
                     return new Average();
                 case "MAX(":
                     return new Max();
-                // Add more cases for other functions
                 default:
                     throw new IllegalArgumentException("Invalid function name: " + functionName);
             }

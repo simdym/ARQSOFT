@@ -3,6 +3,10 @@ package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.Argument;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.Operand;
 
+/**
+ * NumericalValue is a subclass of Value. It represents the value of a cell that is a number (NUMERICALCONTENT).
+ * It contains the value of the cell as a double.
+ */
 public class NumericalValue implements Value , Argument, Operand {
     private final double value;
 
@@ -22,7 +26,7 @@ public class NumericalValue implements Value , Argument, Operand {
     public Double getValue() {return value;}
 
     @Override
-    public double getValueAsDouble() { return value; }
+    public double getValueAsDouble() { return value; }//Used for formula processing
 
     @Override
     public String getValueAsString() { return Double.toString(value); }

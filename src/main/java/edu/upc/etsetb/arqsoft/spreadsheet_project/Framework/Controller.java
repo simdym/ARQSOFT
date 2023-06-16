@@ -133,7 +133,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
     public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException, CircularDependencyException {
         // Get project root folder
         String userDir = System.getProperty("user.dir");
-        
+
         // Append filename
         String loadPath = new StringBuilder(userDir).append('\\').append(nameInUserDir).toString();
 

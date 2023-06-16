@@ -8,6 +8,15 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * Parser class which checks the grammar of the formula and throws an exception if it is not correct.
+ *
+ * Has method to get cell dependencies
+ *
+ * Has method to check circular dependencies
+ *
+ */
 public class Parser {
 
         private ArrayList<Integer> savedTokens;
@@ -149,7 +158,7 @@ public class Parser {
         return dependencies;
     }
 
-    private void collectDependencies(Cell cell, List<Cell> dependencies) {
+    private void collectDependencies(Cell cell, List<Cell> dependencies) { //collect dependencies
         if (cell != null && cell.getContent() instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) cell.getContent();
             List<Cell> dependentCells = formula.getDependentCells();
@@ -163,7 +172,7 @@ public class Parser {
     }
 
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
-        if (visitedCells.contains(cell)) {
+        if (visitedCells.contains(cell)) { //if the cell we are checking is in the list of visitedCells, throwException
             throw new CircularDependencyException("Circular dependency");
         }
 

@@ -1,5 +1,14 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 
+
+/**
+ *
+ * Represents the content of a cell.
+ * The content can be a text, a value or a formula.
+ *
+ *
+ */
+
 public abstract class Content {
     protected String content;
     protected Value value;

@@ -4,7 +4,13 @@ import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
 
 import java.util.LinkedList;
-
+/**
+ *
+ * CellRange class. It is used to store the range of cells that are used in a formula, as an argument.
+ * Defined by topleft coordinate and bottomright coordinate.
+ *
+ * Method listOfCells() returns a list of cells that are in the range.
+ */
 public class CellRange{
     private Coordinate topLeftCoordinate;
     private Coordinate bottomRightCoordinate;
@@ -16,7 +22,7 @@ public class CellRange{
         this.spreadsheet = spreadsheet;
     }
 
-    public LinkedList<Cell> listOfCells() {
+    public LinkedList<Cell> listOfCells() { //Transforms coordinates to integers and iterates through them to get the cells.
         int topRow = topLeftCoordinate.getRow();
         int bottomRow = bottomRightCoordinate.getRow();
         int topCol = topLeftCoordinate.getCol();
