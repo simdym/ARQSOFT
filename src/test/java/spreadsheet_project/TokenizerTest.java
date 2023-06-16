@@ -112,7 +112,7 @@ class TokenizerTest {
     void testgetValue() throws NoNumberException {
         Controller controller = new Controller();
         Coordinate coord = new Coordinate("C4");
-        controller.setCellContent("C4", "=54");
+        //controller.setCellContent("C4", "");
         controller.setCellContent("A2", "=C4");
         System.out.println(controller.getCellContentAsDouble("A2"));
 
