@@ -1,37 +1,35 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Framework;
 
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Content;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.ContentFactory;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class FileManager {
     public FileManager() {}
 
-    public void loadSpreadsheet(String filepath, Spreadsheet targetSpreadsheet) throws FileNotFoundException {
+    public ArrayList<String[]> loadSpreadsheet(String filepath) throws FileNotFoundException {
         File file = new File(filepath);
         Scanner sc = new Scanner(file);
+        ArrayList<String[]> rows = new ArrayList<String[]>();
 
-        int row = 0;
         while (sc.hasNextLine()) {
+            // Reads line from file
             String str = sc.nextLine();
 
-            String[] cellContents = str.split(";", -1);
-
-            for(int col = 0; col < cellContents.length; col++) {
-                if(cellContents[col] != "") {
-                    Content newContent = ContentFactory.createContent(cellContents[col]);
-                    targetSpreadsheet.updateContent(new Coordinate(row, col), newContent);
-                }
+            // Split
+            String[] rowContents = str.split(";", -1);
+            for (int i = 0; i < rowContents.length; ++i) {
+                rowContents[i] = rowContents[i].replace(',', ';');
             }
 
-            row++;
+            rows.add(rowContents);
         }
+        return rows;
     }
-    //private Spreadsheet S2VToSpreadsheet(String filename){}
+
     public void saveSpreadsheet(Spreadsheet originSpreadsheet, String filepath) throws IOException {
         int maxRow = originSpreadsheet.getMaxRow();
         int maxCol = originSpreadsheet.getMaxColumn();

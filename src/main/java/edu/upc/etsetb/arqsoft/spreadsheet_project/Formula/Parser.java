@@ -28,7 +28,7 @@ public class Parser {
             return this.tokens;
         }
 
-        public void parse()  {
+        public void parse() throws ParserException {
             checkBalancedParenthesis(tokens);
             savedTokens.clear();
             if (tokens.get(0).getTokenType() == Tokenizer.MULTDIV || tokens.get(0).getTokenType() == Tokenizer.PLUSMINUS || tokens.get(0).getTokenType() == Tokenizer.CLOSE_BRACKET) {
@@ -100,7 +100,7 @@ public class Parser {
                     savedTokens.add(num); // save token
                 }
             }
-        public void checkBalancedParenthesis(LinkedList<Token> tokens){
+        public void checkBalancedParenthesis(LinkedList<Token> tokens) throws ParserException {
             int openBrackets = 0;
             for (Token tok : tokens) {
                 int num = tok.getTokenType();
@@ -142,19 +142,22 @@ public class Parser {
                     dependencies.add(cell);
                 }
             }
-    }
-return dependencies;
-}
+        }
+        return dependencies;
+        }
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
         if (visitedCells.contains(cell)) {
             throw new CircularDependencyException("Circular dependency");
         }
         for (Cell visitedCell:visitedCells){
-            if (visitedCell.getContent() instanceof FormulaContent){
-                FormulaContent formula = (FormulaContent) visitedCell.getContent();
-                List<Cell> dependencies = formula.getDependentCells();
-                checkCircularDependencies(cell, dependencies);
+            if(visitedCell != null) {
+                if (visitedCell.getContent() instanceof FormulaContent){
+                    FormulaContent formula = (FormulaContent) visitedCell.getContent();
+                    List<Cell> dependencies = formula.getDependentCells();
+                    checkCircularDependencies(cell, dependencies);
+                }
             }
+
         }
     }
 

@@ -1,6 +1,7 @@
 package spreadsheet_project;
 import java.util.LinkedList;
 
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.NumericalContent;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class TokenizerTest {
     @Test
-    void testCalculateFormula() {
+    void testCalculateFormula() throws ParserException {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
 
@@ -78,7 +79,7 @@ class TokenizerTest {
     }
 
     @Test
-    void testFormulaComponentFabricator(){
+    void testFormulaComponentFabricator() throws ParserException {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
 
