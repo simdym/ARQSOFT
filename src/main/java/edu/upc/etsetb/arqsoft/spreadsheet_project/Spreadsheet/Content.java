@@ -10,7 +10,9 @@ public abstract class Content {
     }
 
     public String getContent() {return content;}
+    public String getSaveableString() {return content; }
     public Value getValue() {return value;}
+
 
     public void setContent(String newContent) {content = newContent;}
     public void setValue(Value newValue) {value = newValue;}

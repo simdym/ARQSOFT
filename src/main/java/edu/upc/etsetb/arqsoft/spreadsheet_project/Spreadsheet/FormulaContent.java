@@ -14,7 +14,11 @@ public class FormulaContent extends Content {
         this.content = formulaStr;
             this.dependentCells = new LinkedList<Cell>();
             this.postfixExpression = new LinkedList<Tokenizer.Token>();
+        }
 
+        @Override
+        public String getSaveableString() {
+            return content.replaceAll(";", ",");
         }
 
         public void setValue(NumericalValue value) {

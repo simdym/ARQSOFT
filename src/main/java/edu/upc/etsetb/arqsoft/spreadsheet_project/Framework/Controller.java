@@ -231,7 +231,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
         Coordinate cellCord = new Coordinate(coord);
         Content content = spreadsheet.getCell(cellCord).getContent();
         if(content instanceof FormulaContent) {
-            return spreadsheet.getCell(cellCord).getContent().getContent();
+            return content.getContent().substring(1);
         } else {
             throw new BadCoordinateException("The cell is not a formula");
         }
