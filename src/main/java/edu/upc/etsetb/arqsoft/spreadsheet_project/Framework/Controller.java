@@ -236,7 +236,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
 
         LinkedList<Cell> references = new LinkedList<>();
         references.addAll(cell.getCellReferences());
-        System.out.println("Updated cell has"+references.size()+"references");
+
         while (!references.isEmpty()) {
             Cell cellToUpdate = references.poll();
             references.addAll(cellToUpdate.getCellReferences());
