@@ -182,7 +182,7 @@ public class Controller {
 
         LinkedList<Cell> references = new LinkedList<>();
         references.addAll(cell.getCellReferences());
-        System.out.println("Updated cell has"+references.size()+"references");
+
         while (!references.isEmpty()) {
             Cell cellToUpdate = references.poll();
             references.addAll(cellToUpdate.getCellReferences());
@@ -193,7 +193,6 @@ public class Controller {
 
     }
     private void updateCellValue(Cell cellToModify) {
-        System.out.println("Updating cell ");
         Content content = cellToModify.getContent();
         if (content != null && content instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) content;
