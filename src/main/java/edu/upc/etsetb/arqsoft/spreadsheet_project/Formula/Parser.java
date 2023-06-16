@@ -119,51 +119,55 @@ public class Parser {
     public void setSpreadsheet(Spreadsheet spreadsheet){
         this.spreadsheet = spreadsheet;
     }
-    public List<Cell> getCellDependencies(){
-        List<Cell> dependencies = new ArrayList<Cell>();
+    public List<Cell> getCellDependencies() {
+        List<Cell> dependencies = new ArrayList<>();
         for (Token tok : tokens) {
             int num = tok.getTokenType();
-            if (num == Tokenizer.CELL){
+            if (num == Tokenizer.CELL) {
                 String coordinates = tok.getTokenString();
                 Coordinate coord = new Coordinate(coordinates);
                 Cell cell = spreadsheet.getCell(coord);
-                if(cell == null) {
+                if (cell == null) {
                     Content content = new NumericalContent("0");
                     spreadsheet.updateContent(coord, content);
-                    System.out.println("Create cell"+tok.getTokenString());
                     cell = spreadsheet.getCell(coord);
                 }
                 dependencies.add(cell);
-            }
-            if (num == Tokenizer.RANGE){
+                collectDependencies(cell, dependencies);
+            } else if (num == Tokenizer.RANGE) {
                 String coordinateRange = tok.getTokenString();
                 Coordinate coord1 = new Coordinate(coordinateRange.split(":")[0]);
                 Coordinate coord2 = new Coordinate(coordinateRange.split(":")[1]);
-                CellRange range = new CellRange(coord1,coord2,spreadsheet);
+                CellRange range = new CellRange(coord1, coord2, spreadsheet);
                 LinkedList<Cell> cells = range.listOfCells();
-                for (Cell cell: cells){
+                for (Cell cell : cells) {
                     dependencies.add(cell);
+                    collectDependencies(cell, dependencies);
                 }
             }
         }
         return dependencies;
+    }
+
+    private void collectDependencies(Cell cell, List<Cell> dependencies) {
+        if (cell != null && cell.getContent() instanceof FormulaContent) {
+            FormulaContent formula = (FormulaContent) cell.getContent();
+            List<Cell> dependentCells = formula.getDependentCells();
+            for (Cell dependentCell : dependentCells) {
+                if (!dependencies.contains(dependentCell)) {
+                    dependencies.add(dependentCell);
+                    collectDependencies(dependentCell, dependencies);
+                }
+            }
         }
+    }
+
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
-        System.out.println("Enter circulardependencty");
         if (visitedCells.contains(cell)) {
             throw new CircularDependencyException("Circular dependency");
         }
 
-
-
-        for (Cell visitedCell:visitedCells){
-            if(visitedCell != null) {
-
-                if (visitedCell.getContent() instanceof FormulaContent) {
-                    FormulaContent formula = (FormulaContent) visitedCell.getContent();
-                    List<Cell> dependencies = formula.getDependentCells();
-                    checkCircularDependencies(cell, dependencies);
-                }}}}
+    }
 }
 
 
