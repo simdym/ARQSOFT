@@ -126,20 +126,16 @@ public class Controller implements ISpreadsheetControllerForChecker {
                         Coordinate coordinate = new Coordinate(row, col);
                         try {
                             setCellContentFromCoordinate(coordinate, rowContents[col]);
-                            //updateAllCells();
                         } catch (Exception e) {
                             throw new ReadingSpreadSheetException(e.getMessage());
                         }
                     }
                 }
             }
-            updateAllCells();
         } catch (FileNotFoundException e) {
             throw new ReadingSpreadSheetException(e.getMessage());
         } catch (EvaluationException e) {
             throw new ReadingSpreadSheetException(e.getMessage());
-        } catch (CircularDependencyException e) {
-            throw new CircularDependencyException(e.getMessage());
         }
     }
 
@@ -200,7 +196,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
                 cell.setContent(previousContent);
                 throw new CircularDependencyException(e.getMessage());
             }
-            //formula.setDependentCells(dependencies);
+
             LinkedList<Tokenizer.Token> postfixExpression= postfixGenerator.generatePostfix(parsedTokens);
             formula.setPostfixExpression(postfixExpression);
             formulaComponentFabricator.setSpreadsheet(spreadsheet);
@@ -213,7 +209,6 @@ public class Controller implements ISpreadsheetControllerForChecker {
             } catch (EvaluationException ex) {
                 String result2 ="NaN";
                 formula.setValue(new TextValue(result2));
-                throw new ContentException(ex.getMessage());
             }
         }
         if (previousContent != null) {
