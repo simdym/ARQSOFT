@@ -1,6 +1,5 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class Spreadsheet {
     private String filename;
@@ -10,10 +9,30 @@ public class Spreadsheet {
         cells = new HashMap<Coordinate, Cell>();
     }
 
+    public ArrayList<Integer> getRelevantRows() {
+        LinkedHashSet<Integer> relevantRowsSet = new LinkedHashSet<Integer>();
+        for (Coordinate coordinate : cells.keySet()) {
+            relevantRowsSet.add(coordinate.getRow());
+        }
+        ArrayList<Integer> relevantRows = new ArrayList<Integer>(relevantRowsSet);
+        Collections.sort(relevantRows);
+        return relevantRows;
+    }
+
+    public ArrayList<Integer> getRelevantCols() {
+        LinkedHashSet<Integer> relevantColsSet = new LinkedHashSet<Integer>();
+        for (Coordinate coordinate : cells.keySet()) {
+            relevantColsSet.add(coordinate.getCol());
+        }
+        ArrayList<Integer> relevantCols = new ArrayList<Integer>(relevantColsSet);
+        Collections.sort(relevantCols);
+        return relevantCols;
+    }
+
     public int getMaxRow() {
         int maxRow = 0;
-        for(Coordinate coordinate: cells.keySet()) {
-            if(coordinate.getRow() > maxRow) {
+        for (Coordinate coordinate : cells.keySet()) {
+            if (coordinate.getRow() > maxRow) {
                 maxRow = coordinate.getRow();
             }
         }
@@ -23,13 +42,24 @@ public class Spreadsheet {
 
     public int getMaxColumn() {
         int maxColumn = 0;
-        for(Coordinate coordinate: cells.keySet()) {
-            if(coordinate.getCol() > maxColumn) {
+        for (Coordinate coordinate : cells.keySet()) {
+            if (coordinate.getCol() > maxColumn) {
                 maxColumn = coordinate.getCol();
             }
         }
 
         return maxColumn;
+    }
+
+    public int getMaxWidth() {
+        int maxWidth = 0;
+        for(Cell cell: cells.values()) {
+            int length = cell.getContent().getContent().length();
+            if(length > maxWidth) {
+                maxWidth = length;
+            }
+        }
+        return maxWidth;
     }
 
     public void updateContent(Coordinate coordinate, Content content) {
