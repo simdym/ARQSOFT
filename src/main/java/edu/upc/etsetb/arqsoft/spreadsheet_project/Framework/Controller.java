@@ -260,7 +260,12 @@ public class Controller implements ISpreadsheetControllerForChecker {
     @Override
     public String getCellContentAsString(String coord) throws BadCoordinateException {
         Coordinate cellCord = new Coordinate(coord);
-        return spreadsheet.getCell(cellCord).getContent().getContent();
+        Cell cell = spreadsheet.getCell(cellCord);
+        if(cell == null) {
+            return "";
+        } else {
+            return spreadsheet.getCell(cellCord).getContent().getContent();
+        }
     }
 
     @Override
