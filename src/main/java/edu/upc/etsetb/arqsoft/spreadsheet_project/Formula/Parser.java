@@ -119,7 +119,7 @@ public class Parser {
     public void setSpreadsheet(Spreadsheet spreadsheet){
         this.spreadsheet = spreadsheet;
     }
-    public List<Cell> getCellDependencies(){
+    public List<Cell> getCellDependencies() {
         List<Cell> dependencies = new ArrayList<Cell>();
         for (Token tok : tokens) {
             int num = tok.getTokenType();
@@ -147,7 +147,10 @@ public class Parser {
             }
         }
         return dependencies;
-        }
+    }
+
+
+
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
         System.out.println("Enter circulardependencty");
         if (visitedCells.contains(cell)) {

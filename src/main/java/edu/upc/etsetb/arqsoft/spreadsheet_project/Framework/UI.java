@@ -32,7 +32,7 @@ public class UI {
         ArrayList<Integer> relevantRows = spreadsheet.getRelevantRows();
         ArrayList<Integer> relevantCols = spreadsheet.getRelevantCols();
 
-        String diagonalHeader = "col\\rows";
+        String diagonalHeader = "rows\\cols";
         int maxWidth = spreadsheet.getMaxWidth();
         if(maxWidth < diagonalHeader.length()) {
             maxWidth = diagonalHeader.length();

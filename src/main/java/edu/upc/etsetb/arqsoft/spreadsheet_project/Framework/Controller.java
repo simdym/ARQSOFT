@@ -211,7 +211,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
             } catch (EvaluationException ex) {
                 String result2 ="NaN";
                 formula.setValue(new TextValue(result2));
-
+                throw new ContentException(ex.getMessage());
             }
         }
         if (previousContent != null) {
