@@ -72,7 +72,6 @@ public class Spreadsheet {
         }
     }
 
-
     public Content getContent(Coordinate coordinate) {
         Cell cell = cells.get(coordinate);
         if (cell == null) {

@@ -16,57 +16,70 @@ public class UI {
     public UI(){}
 
     public Cmd askForCmd() throws FileNotFoundException {
-        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+        Scanner myObj = new Scanner(System.in);
         System.out.println("Enter command");
 
-        String commandStr = myObj.nextLine(); // Read command
+        // Read command
+        String commandStr = myObj.nextLine();
 
+        // Create command from string
         return CmdFactory.readCmd(commandStr);
     }
 
     private String fixedLengthString(String string, int length) {
+        // Get string of given length
         return String.format("%1$"+length+ "s", string);
     }
 
     public void displaySpreadsheet(Spreadsheet spreadsheet) {
+        // Get all columns and rows with cells
         ArrayList<Integer> relevantRows = spreadsheet.getRelevantRows();
         ArrayList<Integer> relevantCols = spreadsheet.getRelevantCols();
 
+        // String up to the left
         String diagonalHeader = "rows\\cols";
+
+        // Get max length of values
         int maxWidth = spreadsheet.getMaxWidth();
         if(maxWidth < diagonalHeader.length()) {
             maxWidth = diagonalHeader.length();
         }
 
-
-
-        // Print headers
+        // Add headers
         StringBuilder headers = new StringBuilder();
         headers.append(" | ");
         headers.append(fixedLengthString(diagonalHeader, maxWidth));
         headers.append(" | ");
-        for (Integer col: relevantCols) {
-            //Calculate character representation of column
-            StringBuilder column = new StringBuilder();
 
+
+        for (Integer col: relevantCols) {
+            // Calculate character representation of column index
+            StringBuilder columnIndex = new StringBuilder();
             while (col >= 0) {
                 int remainder = col % 26;
                 char character = (char) ('A' + remainder);
-                column.insert(0, character);
+                columnIndex.insert(0, character);
                 col = (col / 26) - 1;
             }
-            String columnStr = fixedLengthString(column.toString(), 10);
+
+            // Add to header with given width
+            String columnStr = fixedLengthString(columnIndex.toString(), 10);
             headers.append(columnStr);
             headers.append(" | ");
         }
+
+        // Print headers
         System.out.println(headers);
 
+        // Print all columns and rows
         for (Integer row: relevantRows) {
-            StringBuilder columnString = new StringBuilder();
-            columnString.append(" | ");
+            
+            // Add rows
+            StringBuilder rowString = new StringBuilder();
+            rowString.append(" | ");
             String rowIndex = fixedLengthString(String.valueOf(row + 1), maxWidth);
-            columnString.append(rowIndex);
-            columnString.append(" | ");
+            rowString.append(rowIndex);
+            rowString.append(" | ");
             for (Integer col: relevantCols) {
 
                 // Retrieve content and convert to String
@@ -75,13 +88,15 @@ public class UI {
                 if (content != null) {
                     stringContent = String.valueOf(content.getValue().getValue());
                 }
+
                 // Append to columnString
                 stringContent = fixedLengthString(stringContent, 10);
-                columnString.append(stringContent);
-                columnString.append(" | ");
+                rowString.append(stringContent);
+                rowString.append(" | ");
             }
-            //appends the string to the file
-            System.out.println(columnString);
+            
+            // Print row
+            System.out.println(rowString);
         }
     }
 }
