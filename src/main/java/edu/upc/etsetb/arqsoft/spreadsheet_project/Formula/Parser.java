@@ -1,5 +1,5 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Formula;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.CircularDependencyException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.*;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.Tokenizer.Token;
@@ -131,6 +131,7 @@ public class Parser {
                     Content content = new NumericalContent("0");
                     spreadsheet.updateContent(coord, content);
                     System.out.println("Create cell"+tok.getTokenString());
+                    cell = spreadsheet.getCell(coord);
                 }
                 dependencies.add(cell);
             }

@@ -1,5 +1,6 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Framework;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ISpreadsheetControllerForChecker;
@@ -7,7 +8,6 @@ import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ReadingSpreadSheetExce
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.SavingSpreadSheetException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Cmd.CmdFactory;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Cmd.Cmd;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.EvaluationException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;

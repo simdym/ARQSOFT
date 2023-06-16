@@ -2,6 +2,7 @@ package spreadsheet_project;
 import java.util.LinkedList;
 
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
 
@@ -113,11 +114,12 @@ class TokenizerTest {
     }
 
     @Test
-    void testgetValue() throws ContentException {
+    void testgetValue() throws ContentException, CircularDependencyException {
         Controller controller = new Controller();
         Coordinate coord = new Coordinate("C4");
         //controller.setCellContent("C4", "");
         controller.setCellContent("A2", "=C4");
+        controller.setCellContent("A2", "=A2");
         System.out.println(controller.getCellContentAsDouble("A2"));
 
 
