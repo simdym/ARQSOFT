@@ -10,7 +10,7 @@ public class FormulaContent extends Content {
         private List<Cell> dependentCells;
         private LinkedList<Tokenizer.Token> postfixExpression;
         public FormulaContent(String formulaStr){
-            super(formulaStr, new TextValue(formulaStr));
+            super(formulaStr, null);
             this.content = formulaStr;
             this.dependentCells = new LinkedList<Cell>();
             this.postfixExpression = new LinkedList<Tokenizer.Token>();

@@ -6,9 +6,14 @@ import java.util.LinkedList;
 
 public class Cell implements Argument, Operand {
     Content content;
+<<<<<<< HEAD
 
+=======
+    Coordinate coordinate;
+>>>>>>> 0da2b189264229c7226d5b6dc3b89373939b1cc2
     LinkedList<Cell> references = new LinkedList<Cell>();
-    public Cell(Content content) {
+    public Cell(Coordinate coordinate, Content content) {
+        this.coordinate = coordinate;
         this.content = content;
     }
 
