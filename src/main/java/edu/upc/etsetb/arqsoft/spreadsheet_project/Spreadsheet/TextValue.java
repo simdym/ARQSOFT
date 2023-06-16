@@ -1,7 +1,10 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
-
+/**
+ * TextValue is a subclass of Value. It represents the value of a cell that is a text (TEXTCONTENT).
+ * It contains the value of the cell as a string.
+ */
 public class TextValue implements Value {
     String value;
     public TextValue(String value) {

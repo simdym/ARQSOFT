@@ -7,6 +7,15 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * Represents the coordinates of a cell in the spreadsheet.
+ * Defined by a row and a column, which are integers.
+ * If given a string, it can be converted to a coordinate using a matcher.
+ *
+ *
+ *
+ */
 public class Coordinate {
     private int row;
     private int col;
