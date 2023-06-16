@@ -55,7 +55,6 @@ public class Spreadsheet {
     public Cell getCell(Coordinate coordinate) {
         return cells.get(coordinate);
     }
-
     public Set<Coordinate> getCoordinates() {
         return cells.keySet();
     }

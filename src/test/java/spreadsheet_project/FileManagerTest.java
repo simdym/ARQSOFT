@@ -1,5 +1,9 @@
 package spreadsheet_project;
 
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
+import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ReadingSpreadSheetException;
+import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.SavingSpreadSheetException;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.Controller;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.FileManager;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Content;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.ContentFactory;
@@ -15,45 +19,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FileManagerTest {
 
     @Test
-    void testLoadAndSaveSpreadsheet() throws IOException {
-        Spreadsheet ss1 = new Spreadsheet();
-        FileManager fm = new FileManager();
+    void testLoadAndSaveSpreadsheet() throws IOException, ContentException, ReadingSpreadSheetException, SavingSpreadSheetException {
+        Controller controller1 = new Controller();
         String filepath = "spreadsheetToBeloaded.sv2";
 
-        Content content1 = ContentFactory.createContent("124.3");
-        Content content2 = ContentFactory.createContent("18.2");
-        Content content3 = ContentFactory.createContent("foo");
-        Content content4 = ContentFactory.createContent("1999");
-        Content content5 = ContentFactory.createContent("bar");
+        String cellID1 = "A1";
+        String cellID2 = "B1";
+        String cellID3 = "C3";
+        String cellID4 = "A3";
+        String cellID5 = "A4";
 
-        Coordinate coordinate1 = new Coordinate(0, 2);
-        Coordinate coordinate2 = new Coordinate(2, 31);
-        Coordinate coordinate3 = new Coordinate(13, 30);
-        Coordinate coordinate4 = new Coordinate(3, 12);
-        Coordinate coordinate5 = new Coordinate(45, 4);
+        String value1 = "124.3";
+        String value2 = "=MAX(2;1)";
+        String value3 = "foo";
+        String value4 = "=A1-2";
+        String value5 = "=13-2";
 
-        ss1.updateContent(coordinate1, content1);
-        ss1.updateContent(coordinate2, content2);
-        ss1.updateContent(coordinate3, content3);
-        ss1.updateContent(coordinate4, content4);
-        ss1.updateContent(coordinate5, content5);
+        controller1.setCellContent(cellID1, value1);
+        controller1.setCellContent(cellID2, value2);
+        controller1.setCellContent(cellID3, value3);
+        controller1.setCellContent(cellID4, value4);
+        controller1.setCellContent(cellID5, value5);
 
-        Spreadsheet ss2 = new Spreadsheet();
-        fm.saveSpreadsheet(ss1, filepath);
-        fm.loadSpreadsheet(filepath, ss2);
+        controller1.saveSpreadSheetToFile(filepath);
 
-        Object value1_ss1 = ss1.getContent(coordinate1).getValue().getValue();
-        Object value1_ss2 = ss2.getContent(coordinate1).getValue().getValue();
+        Controller controller2 = new Controller();
+        controller2.readSpreadSheetFromFile(filepath);
 
-        Object value2_ss1 = ss1.getContent(coordinate2).getValue().getValue();
-        Object value2_ss2 = ss2.getContent(coordinate2).getValue().getValue();
+        System.out.println("Excepted vs reality: " + controller1.getCellContentAsString(cellID1) + " vs " + controller2.getCellContentAsString(cellID1));
+        System.out.println("Excepted vs reality: " + controller1.getCellContentAsString(cellID2) + " vs " + controller2.getCellContentAsString(cellID2));
+        System.out.println("Excepted vs reality: " + controller1.getCellContentAsString(cellID3) + " vs " + controller2.getCellContentAsString(cellID3));
+        System.out.println("Excepted vs reality: " + controller1.getCellContentAsString(cellID4) + " vs " + controller2.getCellContentAsString(cellID4));
+        System.out.println("Excepted vs reality: " + controller1.getCellContentAsString(cellID5) + " vs " + controller2.getCellContentAsString(cellID5));
 
         assertAll("Testing all cells remain the same",
-                () -> assertEquals(ss1.getContent(coordinate1).getValue().getValue(), ss2.getContent(coordinate1).getValue().getValue()),
-                () -> assertEquals(ss1.getContent(coordinate2).getValue().getValue(), ss2.getContent(coordinate2).getValue().getValue()),
-                () -> assertEquals(ss1.getContent(coordinate3).getValue().getValue(), ss2.getContent(coordinate3).getValue().getValue()),
-                () -> assertEquals(ss1.getContent(coordinate4).getValue().getValue(), ss2.getContent(coordinate4).getValue().getValue()),
-                () -> assertEquals(ss1.getContent(coordinate5).getValue().getValue(), ss2.getContent(coordinate5).getValue().getValue())
+                () -> assertEquals(controller1.getCellContentAsString(cellID1), controller2.getCellContentAsString(cellID1)),
+                () -> assertEquals(controller1.getCellContentAsString(cellID2), controller2.getCellContentAsString(cellID2)),
+                () -> assertEquals(controller1.getCellContentAsString(cellID3), controller2.getCellContentAsString(cellID3)),
+                () -> assertEquals(controller1.getCellContentAsString(cellID4), controller2.getCellContentAsString(cellID4)),
+                () -> assertEquals(controller1.getCellContentAsString(cellID5), controller2.getCellContentAsString(cellID5))
         );
     }
 }

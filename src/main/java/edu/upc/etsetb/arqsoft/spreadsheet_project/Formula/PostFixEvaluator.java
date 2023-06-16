@@ -8,7 +8,7 @@ import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.EvaluationException
 public class PostFixEvaluator {
     public PostFixEvaluator() {}
     //has to have a spreadsheet evaluator
-    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression) {
+    public double evaluatePostfix(LinkedList<FormulaComponent> postFixExpression) throws EvaluationException {
 
             Stack<Double> operandStack = new Stack<>();
             for (FormulaComponent fComp : postFixExpression){
@@ -24,10 +24,11 @@ public class PostFixEvaluator {
                 }
             }
             double result = operandStack.pop();
-        if (!operandStack.isEmpty()) {
-            throw new EvaluationException("Evaluation error: Operand stack is not empty");
-        }
-        return result;
+
+            if (!operandStack.isEmpty()) {
+                throw new EvaluationException("Evaluation error: Operand stack is not empty");
+            }
+            return result;
         }
 
     }

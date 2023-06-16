@@ -1,5 +1,6 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Framework;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ISpreadsheetControllerForChecker;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ReadingSpreadSheetException;
@@ -70,7 +71,15 @@ public class Controller implements ISpreadsheetControllerForChecker {
             }
             case EDIT_CELL -> {
                 System.out.println("Updating cell " + cmd.getArgument(0) + " with new content: " + cmd.getArgument(1) + "...");
-                setCellContent(cmd.getArgument(0), cmd.getArgument(1));
+                try {
+                    setCellContent(cmd.getArgument(0), cmd.getArgument(1));
+                } catch (ContentException e) {
+                    System.out.println(e.getMessage());
+                } catch (CircularDependencyException e) {
+                    System.out.println(e.getMessage());
+                } catch (BadCoordinateException e) {
+                    System.out.println(e.getMessage());
+                }
             }
             case LOAD_SPREADSHEET -> {
                 System.out.println("Loading spreadsheet from file: " + cmd.getArgument(0) + "...");
@@ -109,9 +118,25 @@ public class Controller implements ISpreadsheetControllerForChecker {
         String userDir = System.getProperty("user.dir");
         String pathToLoad = new StringBuilder(userDir).append('\\').append(nameInUserDir).toString();
         try {
-            fileManager.loadSpreadsheet(pathToLoad, spreadsheet);
+            ArrayList<String[]> rows = fileManager.loadSpreadsheet(pathToLoad);
+            for(int row = 0; row < rows.size(); row++) {
+                String[] rowContents = rows.get(row);
+                for(int col = 0; col < rowContents.length; col++) {
+                    if(rowContents[col] != "") {
+                        Coordinate coordinate = new Coordinate(row, col);
+                        try {
+                            setCellContentFromCoordinate(coordinate, rowContents[col]);
+                            //updateAllCells();
+                        } catch (Exception e) {
+                            throw new ReadingSpreadSheetException(e.getMessage());
+                        }
+                    }
+                }
+            }
             updateAllCells();
         } catch (FileNotFoundException e) {
+            throw new ReadingSpreadSheetException(e.getMessage());
+        } catch (EvaluationException e) {
             throw new ReadingSpreadSheetException(e.getMessage());
         }
     }
@@ -128,9 +153,13 @@ public class Controller implements ISpreadsheetControllerForChecker {
     }
 
     @Override
-    public void setCellContent(String cellCoord, String strContent) {
-        Coordinate cellCoor = new Coordinate(cellCoord);
-        Cell oldcell = spreadsheet.getCell(cellCoor);
+    public void setCellContent(String cellCoord, String strContent) throws ContentException, BadCoordinateException, CircularDependencyException {
+        Coordinate coordinate = new Coordinate(cellCoord);
+        setCellContentFromCoordinate(coordinate, strContent);
+    }
+
+    public void setCellContentFromCoordinate(Coordinate cellCoord, String strContent) throws ContentException, BadCoordinateException, CircularDependencyException {
+        Cell oldcell = spreadsheet.getCell(cellCoord);
         Content previousContent;
         if (oldcell != null) {
             previousContent = oldcell.getContent();
@@ -138,8 +167,8 @@ public class Controller implements ISpreadsheetControllerForChecker {
             previousContent = null;// Exit the method or do appropriate error handling
         }
         Content newContent = ContentFactory.createContent(strContent);
-        spreadsheet.updateContent(cellCoor, newContent);
-        Cell cell= spreadsheet.getCell(cellCoor);
+        spreadsheet.updateContent(cellCoord, newContent);
+        Cell cell= spreadsheet.getCell(cellCoord);
         Content currentContent = cell.getContent();
 
         if ((currentContent instanceof FormulaContent)) {
@@ -177,14 +206,14 @@ public class Controller implements ISpreadsheetControllerForChecker {
             try {
                 double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
                 formula.setValue(new NumericalValue(result));
+                System.out.println("Sets value to: " + result);
 
             } catch (EvaluationException ex) {
                 String result2 ="NaN";
                 formula.setValue(new TextValue(result2));
+
             }
         }
-
-
         if (previousContent != null) {
             if (previousContent instanceof FormulaContent) {
                 FormulaContent previousFormula = (FormulaContent) previousContent;
@@ -199,8 +228,12 @@ public class Controller implements ISpreadsheetControllerForChecker {
         if (currentContent instanceof FormulaContent) {
             FormulaContent currentFormula = (FormulaContent) currentContent;
             List<Cell> currentDependencies = currentFormula.getDependentCells();
-
             for (Cell dependentCell : currentDependencies) {
+                if(dependentCell == null) {
+                    Content content = new NumericalContent("0");
+                    dependentCell.setContent( content);
+                    System.out.println("Creating cell cell");
+                }
                 dependentCell.addCellReference(cell);
             }
         }
@@ -241,7 +274,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
 
     }
 
-    private void updateCellValue(Cell cellToModify) {
+    private void updateCellValue(Cell cellToModify) throws EvaluationException {
         Content content = cellToModify.getContent();
         if (content instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) content;
@@ -249,19 +282,12 @@ public class Controller implements ISpreadsheetControllerForChecker {
             formulaComponentFabricator.setSpreadsheet(spreadsheet);
             LinkedList<FormulaComponent> formulaCompExpression = formulaComponentFabricator.fabricateComponentList(postfixExpression);
 
-            try {
-                double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
-                content.setValue(new NumericalValue(result));
-
-            } catch (EvaluationException ex) {
-                String result2 ="NaN";
-                content.setValue(new TextValue(result2));
-            }
-
+            double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
+            content.setValue(new NumericalValue(result));
         }
     }
 
-    private void updateAllCells() {
+    private void updateAllCells() throws EvaluationException {
         for(Coordinate coordinate: spreadsheet.getCoordinates()) {
             Cell cell = spreadsheet.getCell(coordinate);
             updateCellValue(cell);

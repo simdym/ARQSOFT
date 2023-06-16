@@ -2,7 +2,6 @@ package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 
 
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.InvalidCellIDException;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -19,7 +18,7 @@ public class Coordinate {
         this.hashCode = Objects.hash(row, col);
     }
 
-    public Coordinate(String cellId) throws InvalidCellIDException {
+    public Coordinate(String cellId) throws BadCoordinateException {
         Pattern pattern = Pattern.compile("([A-Z]+)(\\d+)");
         Matcher matcher = pattern.matcher(cellId);
 

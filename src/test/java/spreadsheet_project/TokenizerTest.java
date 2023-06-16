@@ -2,7 +2,11 @@ package spreadsheet_project;
 import java.util.LinkedList;
 
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
+
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
+
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.Controller;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
@@ -12,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class TokenizerTest {
     @Test
-    void testCalculateFormula() {
+    void testCalculateFormula() throws ParserException {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
 
@@ -22,8 +26,8 @@ class TokenizerTest {
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("8-MIN(C4;SUM(MIN(1;5);5);AVG(1;MAX(3;1));D5)-D4");  // result 46
-        tokenizer.tokenize("=SUM(1;2)");
+        //tokenizer.tokenize("MIN()");  // result 46
+        tokenizer.tokenize("=(D4*4)/(C5+C4)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.getTokenString() );}
         Parser parser = new Parser();
         parser.setTokens(tokenizer.getTokens());
@@ -81,7 +85,7 @@ class TokenizerTest {
     }
 
     @Test
-    void testFormulaComponentFabricator(){
+    void testFormulaComponentFabricator() throws ParserException {
         Tokenizer tokenizer = new Tokenizer();
         Spreadsheet spreadsheet = new Spreadsheet();
 
@@ -109,7 +113,7 @@ class TokenizerTest {
     }
 
     @Test
-    void testgetValue() throws NoNumberException {
+    void testgetValue() throws ContentException {
         Controller controller = new Controller();
         Coordinate coord = new Coordinate("C4");
         //controller.setCellContent("C4", "");
