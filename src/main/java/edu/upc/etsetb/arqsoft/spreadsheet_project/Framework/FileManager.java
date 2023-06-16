@@ -31,13 +31,16 @@ public class FileManager {
     }
 
     public void saveSpreadsheet(Spreadsheet originSpreadsheet, String filepath) throws IOException {
+        // Finds the max row and column of the spreadsheet
         int maxRow = originSpreadsheet.getMaxRow();
         int maxCol = originSpreadsheet.getMaxColumn();
 
+        // Make file writer
         FileWriter fw = new FileWriter(filepath);
         BufferedWriter bw = new BufferedWriter(fw);
 
         try {
+            // Loop over all cells
             for (int row = 0; row < (maxRow + 1); row++) {
                 StringBuilder columnString = new StringBuilder();
                 for (int col = 0; col < (maxCol + 1); col++) {

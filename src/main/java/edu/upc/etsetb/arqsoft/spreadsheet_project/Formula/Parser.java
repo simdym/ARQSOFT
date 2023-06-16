@@ -128,7 +128,7 @@ public class Parser {
                 Coordinate coord = new Coordinate(coordinates);
                 Cell cell = spreadsheet.getCell(coord);
                 if (cell == null) {
-                    Content content = new NumericalContent("0");
+                    Content content = new NumericalContent("");
                     spreadsheet.updateContent(coord, content);
                     cell = spreadsheet.getCell(coord);
                 }

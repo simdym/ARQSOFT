@@ -72,15 +72,6 @@ public class Spreadsheet {
         }
     }
 
-    public String getContentStr(Coordinate coordinate) {
-        Cell cell = cells.get(coordinate);
-        if (cell == null) {
-            return "";
-        } else {
-            return cell.getContent().getContent();
-        }
-    }
-
     public Content getContent(Coordinate coordinate) {
         Cell cell = cells.get(coordinate);
         if (cell == null) {
