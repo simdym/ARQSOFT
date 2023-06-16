@@ -31,6 +31,7 @@ public class Tokenizer {
     public Tokenizer() {
         tokenInfos = new LinkedList<TokenInfo>();
         tokens = new LinkedList<Token>();
+        add("=", 0);
         add("(SUM\\(|MAX\\(|MIN\\(|AVG\\()", 1); // function name
         add("\\(", 2); // open bracket
         add("\\)", 3); // close bracket

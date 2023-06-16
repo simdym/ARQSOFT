@@ -18,6 +18,15 @@ public class NumericalValue implements Value , Argument, Operand {
         }
     }
 
+    @Override
     public Double getValue() {return value;}
+
+    @Override
+    public double getValueAsDouble() { return value; }
+
+    @Override
+    public String getValueAsString() { return Double.toString(value); }
+
+    @Override
     public double getDoubleValue() {return value;}
 }

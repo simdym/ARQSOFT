@@ -1,6 +1,7 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 
 
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.InvalidCellIDException;
 
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class Coordinate {
         Matcher matcher = pattern.matcher(cellId);
 
         if (!matcher.matches()) {
-            throw new InvalidCellIDException("Invalid coordinate format: " + cellId);
+            throw new BadCoordinateException("Invalid coordinate format: " + cellId);
         }
 
         String colString = matcher.group(1); // With letters

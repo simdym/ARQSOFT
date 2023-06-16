@@ -63,15 +63,6 @@ public class FileManager {
         }
     }
 
-    private void createNewFile(String filename) throws IOException {
-        File file = new File(filename);
-        if (file.createNewFile()) {
-            System.out.println("File created: " + file.getName());
-        } else {
-            System.out.println("File already exists.");
-        }
-    }
-
     public void SpreadsheetToS2V(String filename){}
 }
 

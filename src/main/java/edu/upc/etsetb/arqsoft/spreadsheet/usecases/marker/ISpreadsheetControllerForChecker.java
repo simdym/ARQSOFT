@@ -66,7 +66,7 @@ public interface ISpreadsheetControllerForChecker {
      * @throws BadCoordinateException if the coord argument does not represent a legal coordinate in 
      * the spreadsheet
      */
-    public String getCellContentAsString(String cooord) throws BadCoordinateException;
+    public String getCellContentAsString(String coord) throws BadCoordinateException;
     
     /**
      * Tries to return the textual representation of the formula present in 

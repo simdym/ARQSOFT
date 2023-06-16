@@ -17,11 +17,6 @@ public class FormulaContent extends Content {
 
         }
 
-        @Override
-        public Value getValue() {
-            return super.getValue();
-        }
-
         public void setValue(NumericalValue value) {
             super.value = value;
         }
@@ -43,6 +38,12 @@ public class FormulaContent extends Content {
             this.postfixExpression = new LinkedList<Tokenizer.Token>(postfixExpression);
         }
 
+        public List<Cell> getDependentCellsList() {
+            return this.dependentCells;
+        }
+        public void setDependentCellsList(List<Cell> dependentCellsParsed){
+            this.dependentCells = dependentCellsParsed ;
+        }
 
 
 }

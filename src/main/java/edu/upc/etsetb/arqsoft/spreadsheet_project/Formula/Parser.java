@@ -1,19 +1,34 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Formula;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.CircularDependencyException;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Cell;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.Tokenizer.Token;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.FormulaContent;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
+
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.List;
+
 public class Parser {
 
         private ArrayList<Integer> savedTokens;
-        //private Spreadsheet spreadsheet
+        private LinkedList<Token> tokens;
+        private Spreadsheet spreadsheet;
         public Parser() {
             savedTokens = new ArrayList<>();
             //this.spreadsheet = spreadsheet;
         }
 
-        public void parse(LinkedList<Token> tokens)  {
+        public void setTokens(LinkedList<Token> tokens) {
+            this.tokens = tokens;
+        }
+        public LinkedList<Token> getParsedTokens() {
+            return this.tokens;
+        }
+
+        public void parse()  {
             checkBalancedParenthesis(tokens);
             savedTokens.clear();
             if (tokens.get(0).getTokenType() == Tokenizer.MULTDIV || tokens.get(0).getTokenType() == Tokenizer.PLUSMINUS || tokens.get(0).getTokenType() == Tokenizer.CLOSE_BRACKET) {
@@ -104,6 +119,45 @@ public class Parser {
 
 
     }
+    public void setSpreadsheet(Spreadsheet spreadsheet){
+        this.spreadsheet = spreadsheet;
+    }
+    public List<Cell> getCellDependencies(){
+        List<Cell> dependencies = new ArrayList<Cell>();
+        for (Token tok : tokens) {
+            int num = tok.getTokenType();
+            if (num == Tokenizer.CELL){
+                String coordinates = tok.getTokenString();
+                Coordinate coord = new Coordinate(coordinates);
+                Cell cell = spreadsheet.getCell(coord);
+                dependencies.add(cell);
+            }
+            if (num == Tokenizer.RANGE){
+                String coordinateRange = tok.getTokenString();
+                Coordinate coord1 = new Coordinate(coordinateRange.split(":")[0]);
+                Coordinate coord2 = new Coordinate(coordinateRange.split(":")[1]);
+                CellRange range = new CellRange(coord1,coord2,spreadsheet);
+                LinkedList<Cell> cells = range.listOfCells();
+                for (Cell cell: cells){
+                    dependencies.add(cell);
+                }
+            }
+    }
+return dependencies;
+}
+    public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
+        if (visitedCells.contains(cell)) {
+            throw new CircularDependencyException("Circular dependency");
+        }
+        for (Cell visitedCell:visitedCells){
+            if (visitedCell.getContent() instanceof FormulaContent){
+                FormulaContent formula = (FormulaContent) visitedCell.getContent();
+                List<Cell> dependencies = formula.getDependentCells();
+                checkCircularDependencies(cell, dependencies);
+            }
+        }
+    }
+
 
 }
 

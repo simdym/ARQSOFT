@@ -4,6 +4,8 @@
  */
 package edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker;
 
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.Controller;
+
 /**
  *
  * @author Juan Carlos Cruellas at Universidad Politécnica de Cataluña
@@ -19,13 +21,6 @@ package edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker;
 public interface ISpreadsheetFactoryForChecker {
     
     public static ISpreadsheetControllerForChecker createSpreadsheetController() {
-        throw new UnsupportedOperationException("ISpreadsheetFactoryForChecker::"
-                + "createSpreadsheetController(). You MUST implement the code of "
-                + "this method in this class. The code MUST create a class that "
-                + "implements the Java interface ISpreadsheetControllerForChecker. "
-                + "This code must create the framework that your program requires ("
-                + "your spreadsheet controller, your spreadsheet and the objects required "
-                + "for editing the contents of the cells, and evaluate formulas and functions)"
-              );
+        return new Controller();
     }
 }

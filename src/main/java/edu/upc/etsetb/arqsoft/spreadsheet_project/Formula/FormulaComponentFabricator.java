@@ -10,8 +10,12 @@ public class FormulaComponentFabricator {
     private Spreadsheet spreadsheet;
     private int i;
     public FormulaComponentFabricator(){}
+    public void setSpreadsheet(Spreadsheet spreadsheet){
+        this.spreadsheet = spreadsheet;
+    }
 
-    public static LinkedList<FormulaComponent> fabricateComponentList(LinkedList<Tokenizer.Token> tokenList, Spreadsheet spreadsheet) {
+    public LinkedList<FormulaComponent> fabricateComponentList(LinkedList<Tokenizer.Token> tokenList) {
+
         LinkedList<FormulaComponent> componentList = new LinkedList<>();
         LinkedList<Tokenizer.Token> functionArgumentTokens = new LinkedList<>();
         int openFunction = 0;
