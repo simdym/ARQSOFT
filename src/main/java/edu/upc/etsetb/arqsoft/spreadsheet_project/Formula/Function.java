@@ -19,7 +19,7 @@ public abstract class Function implements Argument, Operand {
     public static class FunctionFactory {//class functionfactory with static method createfunction which receives string (SUM,etc) and creates an object suma, an object min...
         public static Function createFunction(String functionName) {
             switch (functionName) {
-                case "SUM(":
+                case "SUMA(":
                     return new Sum();
                 case "MIN(":
                     return new Min();

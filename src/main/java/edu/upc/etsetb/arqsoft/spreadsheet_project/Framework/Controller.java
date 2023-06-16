@@ -114,7 +114,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
     }
 
     @Override
-    public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException {
+    public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException, CircularDependencyException {
         String userDir = System.getProperty("user.dir");
         String pathToLoad = new StringBuilder(userDir).append('\\').append(nameInUserDir).toString();
         try {
@@ -138,6 +138,8 @@ public class Controller implements ISpreadsheetControllerForChecker {
             throw new ReadingSpreadSheetException(e.getMessage());
         } catch (EvaluationException e) {
             throw new ReadingSpreadSheetException(e.getMessage());
+        } catch (CircularDependencyException e) {
+            throw new CircularDependencyException(e.getMessage());
         }
     }
 
@@ -191,13 +193,15 @@ public class Controller implements ISpreadsheetControllerForChecker {
 
             LinkedList<Tokenizer.Token> parsedTokens = parser.getParsedTokens();
             List<Cell> dependencies = parser.getCellDependencies();
+            System.out.println("Dependencies of: ="+cellCoord.toString() + dependencies.size());
+            formula.setDependentCells(dependencies);
             try {
                 parser.checkCircularDependencies(cell,dependencies);
             } catch (CircularDependencyException e) {
                 cell.setContent(previousContent);
                 throw new CircularDependencyException(e.getMessage());
             }
-            formula.setDependentCells(dependencies);
+            //formula.setDependentCells(dependencies);
             LinkedList<Tokenizer.Token> postfixExpression= postfixGenerator.generatePostfix(parsedTokens);
             formula.setPostfixExpression(postfixExpression);
             formulaComponentFabricator.setSpreadsheet(spreadsheet);
@@ -274,10 +278,12 @@ public class Controller implements ISpreadsheetControllerForChecker {
 
     }
 
-    private void updateCellValue(Cell cellToModify) throws EvaluationException {
+    private void updateCellValue(Cell cellToModify) throws EvaluationException, CircularDependencyException {
         Content content = cellToModify.getContent();
+
         if (content instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) content;
+            parser.checkCircularDependencies(cellToModify,formula.getDependentCells());
             LinkedList<Tokenizer.Token> postfixExpression = formula.getPostfixExpression();
             formulaComponentFabricator.setSpreadsheet(spreadsheet);
             LinkedList<FormulaComponent> formulaCompExpression = formulaComponentFabricator.fabricateComponentList(postfixExpression);
@@ -287,7 +293,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
         }
     }
 
-    private void updateAllCells() throws EvaluationException {
+    private void updateAllCells() throws EvaluationException, CircularDependencyException {
         for(Coordinate coordinate: spreadsheet.getCoordinates()) {
             Cell cell = spreadsheet.getCell(coordinate);
             updateCellValue(cell);

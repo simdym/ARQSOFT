@@ -99,7 +99,7 @@ public interface ISpreadsheetControllerForChecker {
      * to create spreadsheet and fill it with the data present within the 
      * aforementioned file.
      */
-    public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException ;
+    public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException, CircularDependencyException;
     
     
     
