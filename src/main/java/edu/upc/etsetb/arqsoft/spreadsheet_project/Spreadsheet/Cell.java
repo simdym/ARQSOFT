@@ -6,7 +6,11 @@ import java.util.LinkedList;
 
 public class Cell implements Argument, Operand {
     Content content;
+<<<<<<< HEAD
+
+=======
     Coordinate coordinate;
+>>>>>>> 0da2b189264229c7226d5b6dc3b89373939b1cc2
     LinkedList<Cell> references = new LinkedList<Cell>();
     public Cell(Coordinate coordinate, Content content) {
         this.coordinate = coordinate;
@@ -28,6 +32,7 @@ public class Cell implements Argument, Operand {
     }
 
     public void addCellReference(Cell cell) {
+
         references.add(cell);
     }
     public void removeCellReference(Cell cell) {

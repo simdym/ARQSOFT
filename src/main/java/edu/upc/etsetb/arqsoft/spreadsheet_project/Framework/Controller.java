@@ -1,5 +1,6 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Framework;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ISpreadsheetControllerForChecker;
@@ -7,7 +8,6 @@ import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ReadingSpreadSheetExce
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.SavingSpreadSheetException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Cmd.CmdFactory;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Cmd.Cmd;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.EvaluationException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;
@@ -206,14 +206,14 @@ public class Controller implements ISpreadsheetControllerForChecker {
             try {
                 double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
                 formula.setValue(new NumericalValue(result));
+                System.out.println("Sets value to: " + result);
 
             } catch (EvaluationException ex) {
                 String result2 ="NaN";
                 formula.setValue(new TextValue(result2));
+
             }
         }
-
-
         if (previousContent != null) {
             if (previousContent instanceof FormulaContent) {
                 FormulaContent previousFormula = (FormulaContent) previousContent;
@@ -228,8 +228,12 @@ public class Controller implements ISpreadsheetControllerForChecker {
         if (currentContent instanceof FormulaContent) {
             FormulaContent currentFormula = (FormulaContent) currentContent;
             List<Cell> currentDependencies = currentFormula.getDependentCells();
-
             for (Cell dependentCell : currentDependencies) {
+                if(dependentCell == null) {
+                    Content content = new NumericalContent("0");
+                    dependentCell.setContent( content);
+                    System.out.println("Creating cell cell");
+                }
                 dependentCell.addCellReference(cell);
             }
         }
@@ -247,7 +251,9 @@ public class Controller implements ISpreadsheetControllerForChecker {
     @Override
     public double getCellContentAsDouble(String coord) throws BadCoordinateException, NoNumberException {
         Coordinate cellCord = new Coordinate(coord);
-        return spreadsheet.getCell(cellCord).getContent().getValue().getValueAsDouble();
+        Cell cell= spreadsheet.getCell(cellCord);
+        double value =cell.getDoubleValue();
+        return value;
     }
 
     @Override

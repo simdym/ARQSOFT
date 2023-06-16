@@ -1,11 +1,8 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Formula;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.CircularDependencyException;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Cell;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.*;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.Tokenizer.Token;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.FormulaContent;
-import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
 
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -130,6 +127,12 @@ public class Parser {
                 String coordinates = tok.getTokenString();
                 Coordinate coord = new Coordinate(coordinates);
                 Cell cell = spreadsheet.getCell(coord);
+                if(cell == null) {
+                    Content content = new NumericalContent("0");
+                    spreadsheet.updateContent(coord, content);
+                    System.out.println("Create cell"+tok.getTokenString());
+                    cell = spreadsheet.getCell(coord);
+                }
                 dependencies.add(cell);
             }
             if (num == Tokenizer.RANGE){
@@ -146,23 +149,24 @@ public class Parser {
         return dependencies;
         }
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
+        System.out.println("Enter circulardependencty");
         if (visitedCells.contains(cell)) {
             throw new CircularDependencyException("Circular dependency");
         }
+
+
+
         for (Cell visitedCell:visitedCells){
             if(visitedCell != null) {
-                if (visitedCell.getContent() instanceof FormulaContent){
+
+                if (visitedCell.getContent() instanceof FormulaContent) {
                     FormulaContent formula = (FormulaContent) visitedCell.getContent();
                     List<Cell> dependencies = formula.getDependentCells();
                     checkCircularDependencies(cell, dependencies);
-                }
-            }
-
-        }
-    }
-
-
+                }}}}
 }
+
+
 
 
 

@@ -1,5 +1,6 @@
 package spreadsheet_project;
 
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
 import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.ReadingSpreadSheetException;
 import edu.upc.etsetb.arqsoft.spreadsheet.usecases.marker.SavingSpreadSheetException;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FileManagerTest {
 
     @Test
-    void testLoadAndSaveSpreadsheet() throws IOException, ContentException, ReadingSpreadSheetException, SavingSpreadSheetException {
+    void testLoadAndSaveSpreadsheet() throws IOException, ContentException, ReadingSpreadSheetException, SavingSpreadSheetException, CircularDependencyException {
         Controller controller1 = new Controller();
         String filepath = "spreadsheetToBeloaded.sv2";
 

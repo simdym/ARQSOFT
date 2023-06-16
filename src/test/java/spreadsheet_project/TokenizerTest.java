@@ -1,8 +1,15 @@
 package spreadsheet_project;
 import java.util.LinkedList;
 
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.CircularDependencyException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.ContentException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
+
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Exceptions.ParserException;
+
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.Controller;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.NumericalContent;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
@@ -20,8 +27,8 @@ class TokenizerTest {
         spreadsheet.updateContent(new Coordinate("D5"), new NumericalContent("4"));
 
 
-        tokenizer.tokenize("8-MIN(C4;SUM(MIN(1;5);5);AVG(1;MAX(3;1));D5)-D4");  // result 46
-        tokenizer.tokenize("=SUM(1;2)");
+        //tokenizer.tokenize("MIN()");  // result 46
+        tokenizer.tokenize("=(D4*4)/(C5+C4)");
         //for (Tokenizer.Token tok : tokenizer.getTokens()) {System.out.println("" + tok.getTokenString() );}
         Parser parser = new Parser();
         parser.setTokens(tokenizer.getTokens());
@@ -102,6 +109,18 @@ class TokenizerTest {
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
         LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
         for (FormulaComponent tok : formulaTokens) {System.out.println(tok.getClass());}
+
+
+    }
+
+    @Test
+    void testgetValue() throws ContentException, CircularDependencyException {
+        Controller controller = new Controller();
+        Coordinate coord = new Coordinate("C4");
+        //controller.setCellContent("C4", "");
+        controller.setCellContent("A2", "=C4");
+        controller.setCellContent("A2", "=A2");
+        System.out.println(controller.getCellContentAsDouble("A2"));
 
 
     }
