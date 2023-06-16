@@ -7,6 +7,8 @@ import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 
@@ -27,8 +29,8 @@ public class UI {
     }
 
     public void displaySpreadsheet(Spreadsheet spreadsheet) {
-        LinkedHashSet<Integer> relevantRows = spreadsheet.getRelevantRows();
-        LinkedHashSet<Integer> relevantCols = spreadsheet.getRelevantCols();
+        ArrayList<Integer> relevantRows = spreadsheet.getRelevantRows();
+        ArrayList<Integer> relevantCols = spreadsheet.getRelevantCols();
 
         String diagonalHeader = "col\\rows";
         int maxWidth = spreadsheet.getMaxWidth();

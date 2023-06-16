@@ -1,8 +1,5 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Spreadsheet {
     private String filename;
@@ -12,19 +9,23 @@ public class Spreadsheet {
         cells = new HashMap<Coordinate, Cell>();
     }
 
-    public LinkedHashSet<Integer> getRelevantRows() {
-        LinkedHashSet<Integer> relevantRows = new LinkedHashSet<Integer>();
+    public ArrayList<Integer> getRelevantRows() {
+        LinkedHashSet<Integer> relevantRowsSet = new LinkedHashSet<Integer>();
         for (Coordinate coordinate : cells.keySet()) {
-            relevantRows.add(coordinate.getRow());
+            relevantRowsSet.add(coordinate.getRow());
         }
+        ArrayList<Integer> relevantRows = new ArrayList<Integer>(relevantRowsSet);
+        Collections.sort(relevantRows);
         return relevantRows;
     }
 
-    public LinkedHashSet<Integer> getRelevantCols() {
-        LinkedHashSet<Integer> relevantCols = new LinkedHashSet<Integer>();
+    public ArrayList<Integer> getRelevantCols() {
+        LinkedHashSet<Integer> relevantColsSet = new LinkedHashSet<Integer>();
         for (Coordinate coordinate : cells.keySet()) {
-            relevantCols.add(coordinate.getCol());
+            relevantColsSet.add(coordinate.getCol());
         }
+        ArrayList<Integer> relevantCols = new ArrayList<Integer>(relevantColsSet);
+        Collections.sort(relevantCols);
         return relevantCols;
     }
 
