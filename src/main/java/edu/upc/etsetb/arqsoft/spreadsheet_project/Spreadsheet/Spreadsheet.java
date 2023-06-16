@@ -37,7 +37,7 @@ public class Spreadsheet {
         if(cell != null) {
             cell.setContent(content);
         } else {
-            Cell newCell = new Cell(content);
+            Cell newCell = new Cell(coordinate, content);
             cells.put(coordinate, newCell);
         }
     }
