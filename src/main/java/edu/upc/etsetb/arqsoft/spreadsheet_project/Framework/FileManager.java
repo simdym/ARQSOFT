@@ -63,7 +63,5 @@ public class FileManager {
             System.out.println(e.getMessage());
         }
     }
-
-    public void SpreadsheetToS2V(String filename){}
 }
 
