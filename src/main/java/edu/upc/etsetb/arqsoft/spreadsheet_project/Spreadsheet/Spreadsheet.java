@@ -1,5 +1,7 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Spreadsheet {
@@ -10,10 +12,26 @@ public class Spreadsheet {
         cells = new HashMap<Coordinate, Cell>();
     }
 
+    public LinkedHashSet<Integer> getRelevantRows() {
+        LinkedHashSet<Integer> relevantRows = new LinkedHashSet<Integer>();
+        for (Coordinate coordinate : cells.keySet()) {
+            relevantRows.add(coordinate.getRow());
+        }
+        return relevantRows;
+    }
+
+    public LinkedHashSet<Integer> getRelevantCols() {
+        LinkedHashSet<Integer> relevantCols = new LinkedHashSet<Integer>();
+        for (Coordinate coordinate : cells.keySet()) {
+            relevantCols.add(coordinate.getCol());
+        }
+        return relevantCols;
+    }
+
     public int getMaxRow() {
         int maxRow = 0;
-        for(Coordinate coordinate: cells.keySet()) {
-            if(coordinate.getRow() > maxRow) {
+        for (Coordinate coordinate : cells.keySet()) {
+            if (coordinate.getRow() > maxRow) {
                 maxRow = coordinate.getRow();
             }
         }
@@ -23,13 +41,24 @@ public class Spreadsheet {
 
     public int getMaxColumn() {
         int maxColumn = 0;
-        for(Coordinate coordinate: cells.keySet()) {
-            if(coordinate.getCol() > maxColumn) {
+        for (Coordinate coordinate : cells.keySet()) {
+            if (coordinate.getCol() > maxColumn) {
                 maxColumn = coordinate.getCol();
             }
         }
 
         return maxColumn;
+    }
+
+    public int getMaxWidth() {
+        int maxWidth = 0;
+        for(Cell cell: cells.values()) {
+            int length = cell.getContent().getContent().length();
+            if(length > maxWidth) {
+                maxWidth = length;
+            }
+        }
+        return maxWidth;
     }
 
     public void updateContent(Coordinate coordinate, Content content) {
