@@ -149,9 +149,6 @@ public class Parser {
         return dependencies;
     }
 
-<<<<<<< HEAD
-
-=======
     private void collectDependencies(Cell cell, List<Cell> dependencies) {
         if (cell != null && cell.getContent() instanceof FormulaContent) {
             FormulaContent formula = (FormulaContent) cell.getContent();
@@ -164,7 +161,6 @@ public class Parser {
             }
         }
     }
->>>>>>> a92b1a12a98d370c4e1db0613c171503343ed85a
 
     public void checkCircularDependencies(Cell cell, List<Cell> visitedCells) throws CircularDependencyException {
         if (visitedCells.contains(cell)) {
