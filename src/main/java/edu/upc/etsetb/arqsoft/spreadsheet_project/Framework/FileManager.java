@@ -53,7 +53,7 @@ public class FileManager {
                     columnString.append(stringContent).append(";");
                 }
                 //appends the string to the file
-                bw.write(columnString.toString());
+                bw.write(columnString.toString().replaceAll(";+$", ""));
                 bw.newLine();
             }
             bw.close();

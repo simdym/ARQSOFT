@@ -7,8 +7,7 @@ public class ContentFactory {
     public static Content createContent(String contentStr) {
         Content resContent = null;
         if(isFormula(contentStr)) {
-            contentStr.replaceAll(",", ";");
-            resContent = new FormulaContent(contentStr);
+            resContent = new FormulaContent(contentStr.replaceAll(",", ";"));
         } else {
             if(isNumberString(contentStr)) {
                 resContent = new NumericalContent(contentStr);

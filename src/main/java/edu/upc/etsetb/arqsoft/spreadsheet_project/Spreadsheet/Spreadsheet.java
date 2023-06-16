@@ -1,5 +1,6 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Spreadsheet {
     private String filename;
@@ -8,7 +9,6 @@ public class Spreadsheet {
     public Spreadsheet() {
         cells = new HashMap<Coordinate, Cell>();
     }
-    public void updateAllCells(){}
 
     public int getMaxRow() {
         int maxRow = 0;
@@ -30,11 +30,6 @@ public class Spreadsheet {
         }
 
         return maxColumn;
-    }
-
-    private boolean isEmpty(int row, int col) {
-        Coordinate coordinate = new Coordinate(row, col);
-        return cells.containsKey(coordinate);
     }
 
     public void updateContent(Coordinate coordinate, Content content) {
@@ -59,5 +54,9 @@ public class Spreadsheet {
 
     public Cell getCell(Coordinate coordinate) {
         return cells.get(coordinate);
+    }
+
+    public Set<Coordinate> getCoordinates() {
+        return cells.keySet();
     }
 }

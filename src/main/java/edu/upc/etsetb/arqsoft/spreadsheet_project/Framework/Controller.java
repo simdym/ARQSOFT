@@ -110,6 +110,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
         String pathToLoad = new StringBuilder(userDir).append('\\').append(nameInUserDir).toString();
         try {
             fileManager.loadSpreadsheet(pathToLoad, spreadsheet);
+            updateAllCells();
         } catch (FileNotFoundException e) {
             throw new ReadingSpreadSheetException(e.getMessage());
         }
@@ -255,6 +256,13 @@ public class Controller implements ISpreadsheetControllerForChecker {
                 content.setValue(new TextValue(result2));
             }
 
+        }
+    }
+
+    private void updateAllCells() {
+        for(Coordinate coordinate: spreadsheet.getCoordinates()) {
+            Cell cell = spreadsheet.getCell(coordinate);
+            updateCellValue(cell);
         }
     }
 }

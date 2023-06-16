@@ -10,15 +10,16 @@ public class FormulaContent extends Content {
         private List<Cell> dependentCells;
         private LinkedList<Tokenizer.Token> postfixExpression;
         public FormulaContent(String formulaStr){
-        super(formulaStr, new TextValue(formulaStr));
-        this.content = formulaStr;
+            super(formulaStr, new TextValue(formulaStr));
+            this.content = formulaStr;
             this.dependentCells = new LinkedList<Cell>();
             this.postfixExpression = new LinkedList<Tokenizer.Token>();
         }
 
         @Override
         public String getSaveableString() {
-            return content.replaceAll(";", ",");
+            String toBeSaved = getContent();
+            return toBeSaved.replaceAll(";", ",");
         }
 
         public void setValue(NumericalValue value) {
