@@ -218,7 +218,9 @@ public class Controller implements ISpreadsheetControllerForChecker {
     @Override
     public double getCellContentAsDouble(String coord) throws BadCoordinateException, NoNumberException {
         Coordinate cellCord = new Coordinate(coord);
-        return spreadsheet.getCell(cellCord).getContent().getValue().getValueAsDouble();
+        Cell cell= spreadsheet.getCell(cellCord);
+        double value =cell.getDoubleValue();
+        return value;
     }
 
     @Override

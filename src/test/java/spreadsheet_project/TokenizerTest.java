@@ -1,7 +1,10 @@
 package spreadsheet_project;
 import java.util.LinkedList;
 
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.BadCoordinateException;
+import edu.upc.etsetb.arqsoft.spreadsheet.entities.NoNumberException;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Formula.*;
+import edu.upc.etsetb.arqsoft.spreadsheet_project.Framework.Controller;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Coordinate;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.NumericalContent;
 import edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet.Spreadsheet;
@@ -101,6 +104,17 @@ class TokenizerTest {
         FormulaComponentFabricator formulaCompFabr = new FormulaComponentFabricator();
         LinkedList<FormulaComponent> formulaTokens = formulaCompFabr.fabricateComponentList(postfixTokens);
         for (FormulaComponent tok : formulaTokens) {System.out.println(tok.getClass());}
+
+
+    }
+
+    @Test
+    void testgetValue() throws NoNumberException {
+        Controller controller = new Controller();
+        Coordinate coord = new Coordinate("C4");
+        controller.setCellContent("C4", "=54");
+        controller.setCellContent("A2", "=C4");
+        System.out.println(controller.getCellContentAsDouble("A2"));
 
 
     }
