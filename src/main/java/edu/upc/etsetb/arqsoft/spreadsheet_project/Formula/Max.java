@@ -1,5 +1,9 @@
 package edu.upc.etsetb.arqsoft.spreadsheet_project.Formula;
 
+/**
+ *
+ * Calculates the max of the arguments. Subclass of Function.
+ */
 public class Max extends Function {
     public double getDoubleValue(){
 
@@ -7,7 +11,7 @@ public class Max extends Function {
         for (Argument argument : arguments) {
             double value = argument.getDoubleValue();
             if (value > max) {
-                max = value;
+                max = value;//if value is greater than max, max is equal to value
             }
         }
         return max;

@@ -4,6 +4,14 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * Given a string of input, it tokenizes it and returns a list of tokens understandable for the program
+ *
+ * Has method Tokenize which takes a string as input and returns a list of tokens
+ *
+ * Contains mapping between regexes and token types
+ */
 public class Tokenizer {
     public static final int PLUSMINUS = 4;
     public static final int SEMICOLON = 10;
@@ -55,17 +63,17 @@ public class Tokenizer {
                         Pattern.compile("^(" + regex + ")"), token));
     }
 
-    public class Token {
+    public class Token { // token, defined by an int which is tokentype and the string sequence it represents
 
-        private final int token;// modify to tokentype
+        private final int tokenType;
         private final String sequence;
         public Token(int token, String sequence) {
             super();
-            this.token = token;
+            this.tokenType = token;
             this.sequence = sequence;
         }
         public int getTokenType() {
-            return token;
+            return tokenType;
         }
         public String getTokenString() {
             return sequence;
@@ -74,7 +82,7 @@ public class Tokenizer {
 
 
 
-    public void tokenize(String str) {
+    public void tokenize(String str) { // method to tokenize the input string, iterates through the string and matches the regexes
         String s = new String(str);
         s = s.replaceAll("\\s", "");
         tokens.clear();

@@ -116,7 +116,7 @@ public class Controller implements ISpreadsheetControllerForChecker {
     @Override
     public void readSpreadSheetFromFile(String nameInUserDir) throws ReadingSpreadSheetException, CircularDependencyException {
         String userDir = System.getProperty("user.dir");
-        String pathToLoad = new StringBuilder(userDir).append('\\').append(nameInUserDir).toString();
+        String pathToLoad = new StringBuilder(userDir).append('/').append(nameInUserDir).toString();
         try {
             ArrayList<String[]> rows = fileManager.loadSpreadsheet(pathToLoad);
             for(int row = 0; row < rows.size(); row++) {
