@@ -14,6 +14,8 @@ public class CmdFactory {
         Scanner sc = new Scanner(file);
 
         ArrayList<Cmd> commands = new ArrayList<Cmd>();
+
+        // Read each line in file
         while (sc.hasNextLine()) {
             String str = sc.nextLine();
             if(!str.startsWith("RF")) { // Check that the command is not another RF-command
@@ -27,7 +29,11 @@ public class CmdFactory {
     }
 
     public static Cmd readCmd(String commandStr) throws CommandFormatException {
-        String[] cmdParts = commandStr.split("\\s+"); // Split command into parts
+
+        // Split command into parts
+        String[] cmdParts = commandStr.split("\\s+");
+
+        // Get arguments
         String[] arguments = Arrays.copyOfRange(cmdParts, 1, cmdParts.length);
         String cmdTypeStr = cmdParts[0];
 
@@ -35,18 +41,24 @@ public class CmdFactory {
 
         switch (cmdTypeStr) {
             case "RF":
+                // Make RUN_FROM_FILE-command
+
                 if (cmdParts.length != 2) {
                     throw new CommandFormatException("The command does not follow the expected format");
                 }
                 command = new Cmd(CmdType.RUN_FROM_FILE, arguments);
                 break;
             case "C":
+                // Make CREATE_SPREADSHEET-command
+
                 if (cmdParts.length != 1) {
                     throw new CommandFormatException("The command does not follow the expected format");
                 }
                 command = new Cmd(CmdType.CREATE_SPREADSHEET, arguments);
                 break;
             case "E":
+                // Make EDIT_CELL-command
+
                 if (cmdParts.length < 3) {
                     throw new CommandFormatException("The command does not follow the expected format");
                 }
@@ -57,12 +69,16 @@ public class CmdFactory {
                 command = new Cmd(CmdType.EDIT_CELL, new String[]{arguments[0], textContent});
                 break;
             case "L":
+                // Make LOAD_SPREADSHEET-command
+
                 if (cmdParts.length != 2) {
                     throw new CommandFormatException("The command does not follow the expected format");
                 }
                 command = new Cmd(CmdType.LOAD_SPREADSHEET, arguments);
                 break;
             case "S":
+                // Make SAVE_SPREADSHEET-command
+
                 if (cmdParts.length != 2) {
                     throw new CommandFormatException("The command does not follow the expected format");
                 }

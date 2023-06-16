@@ -23,6 +23,8 @@ public class ContentFactory {
     }
 
     private static boolean isNumberString(String value) {
+
+        // Check if string has number value
         try {
             Double.parseDouble(value);
         }

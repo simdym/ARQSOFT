@@ -19,16 +19,22 @@ public class Coordinate {
     }
 
     public Coordinate(String cellId) throws BadCoordinateException {
+
+        // Use regex pattern and matcher
         Pattern pattern = Pattern.compile("([A-Z]+)(\\d+)");
         Matcher matcher = pattern.matcher(cellId);
 
         if (!matcher.matches()) {
+
+            // Coordinate does not follow regex mathcer
             throw new BadCoordinateException("Invalid coordinate format: " + cellId);
         }
 
+        // Get row index and column as
         String colString = matcher.group(1); // With letters
         String rowString = matcher.group(2); // With digits
 
+        // Convert character representation of column index to integer
         col = 0;
         for(int i = 0; i < colString.length(); i++) {
             col *= 26;

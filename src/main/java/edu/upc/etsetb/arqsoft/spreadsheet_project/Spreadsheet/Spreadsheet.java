@@ -2,7 +2,6 @@ package edu.upc.etsetb.arqsoft.spreadsheet_project.Spreadsheet;
 import java.util.*;
 
 public class Spreadsheet {
-    private String filename;
     private HashMap<Coordinate, Cell> cells;
 
     public Spreadsheet() {
@@ -11,9 +10,13 @@ public class Spreadsheet {
 
     public ArrayList<Integer> getRelevantRows() {
         LinkedHashSet<Integer> relevantRowsSet = new LinkedHashSet<Integer>();
+
+        // Add all row indices
         for (Coordinate coordinate : cells.keySet()) {
             relevantRowsSet.add(coordinate.getRow());
         }
+
+        // Sort relevant rows
         ArrayList<Integer> relevantRows = new ArrayList<Integer>(relevantRowsSet);
         Collections.sort(relevantRows);
         return relevantRows;
@@ -21,9 +24,13 @@ public class Spreadsheet {
 
     public ArrayList<Integer> getRelevantCols() {
         LinkedHashSet<Integer> relevantColsSet = new LinkedHashSet<Integer>();
+
+        // Add all coordinate indices
         for (Coordinate coordinate : cells.keySet()) {
             relevantColsSet.add(coordinate.getCol());
         }
+
+        // Sort relevant columns
         ArrayList<Integer> relevantCols = new ArrayList<Integer>(relevantColsSet);
         Collections.sort(relevantCols);
         return relevantCols;
@@ -52,9 +59,11 @@ public class Spreadsheet {
     }
 
     public int getMaxWidth() {
+
+        // Get the maximum width of value in cell
         int maxWidth = 0;
         for(Cell cell: cells.values()) {
-            int length = cell.getContent().getContent().length();
+            int length = cell.getContent().getValue().getValueAsString().length();
             if(length > maxWidth) {
                 maxWidth = length;
             }
@@ -63,28 +72,38 @@ public class Spreadsheet {
     }
 
     public void updateContent(Coordinate coordinate, Content content) {
+
+        // Get cell from coordinate
         Cell cell = cells.get(coordinate);
+
         if(cell != null) {
+
+            // If cell exist update content
             cell.setContent(content);
         } else {
+
+            // Create new cell
             Cell newCell = new Cell(coordinate, content);
             cells.put(coordinate, newCell);
         }
     }
 
     public Content getContent(Coordinate coordinate) {
+
+        // Get cell from coordinate
         Cell cell = cells.get(coordinate);
         if (cell == null) {
+
+            // If cell does not exist return null
             return null;
         } else {
+
+            // Get content from cell if it exist
             return cell.getContent();
         }
     }
 
     public Cell getCell(Coordinate coordinate) {
         return cells.get(coordinate);
-    }
-    public Set<Coordinate> getCoordinates() {
-        return cells.keySet();
     }
 }
