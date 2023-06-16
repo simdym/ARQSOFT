@@ -118,9 +118,10 @@ class TokenizerTest {
         Controller controller = new Controller();
         Coordinate coord = new Coordinate("C4");
         //controller.setCellContent("C4", "");
-        controller.setCellContent("A1", "=A2+A3+A4+A5");
-        controller.setCellContent("A3", "=A9+A10+A11");
-        controller.setCellContent("A11", "=A1+5");
+        controller.setCellContent("A2", "=A6+A7+A8");
+        controller.setCellContent("A11", "=A2+A5");
+        controller.getCellContentAsDouble("B1");
+
         System.out.println(controller.getCellContentAsDouble("A2"));
 
 

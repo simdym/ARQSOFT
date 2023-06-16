@@ -193,7 +193,6 @@ public class Controller implements ISpreadsheetControllerForChecker {
 
             LinkedList<Tokenizer.Token> parsedTokens = parser.getParsedTokens();
             List<Cell> dependencies = parser.getCellDependencies();
-            System.out.println("Dependencies of: ="+cellCoord.toString() + dependencies.size());
             formula.setDependentCells(dependencies);
             try {
                 parser.checkCircularDependencies(cell,dependencies);
@@ -210,7 +209,6 @@ public class Controller implements ISpreadsheetControllerForChecker {
             try {
                 double result = postfixEvaluator.evaluatePostfix(formulaCompExpression);
                 formula.setValue(new NumericalValue(result));
-                System.out.println("Sets value to: " + result);
 
             } catch (EvaluationException ex) {
                 String result2 ="NaN";
@@ -236,7 +234,6 @@ public class Controller implements ISpreadsheetControllerForChecker {
                 if(dependentCell == null) {
                     Content content = new NumericalContent("0");
                     dependentCell.setContent( content);
-                    System.out.println("Creating cell cell");
                 }
                 dependentCell.addCellReference(cell);
             }
@@ -256,6 +253,11 @@ public class Controller implements ISpreadsheetControllerForChecker {
     public double getCellContentAsDouble(String coord) throws BadCoordinateException, NoNumberException {
         Coordinate cellCord = new Coordinate(coord);
         Cell cell= spreadsheet.getCell(cellCord);
+        if (cell == null) {
+            Content content = new NumericalContent("0");
+            spreadsheet.updateContent(cellCord, content);
+            cell = spreadsheet.getCell(cellCord);
+        }
         double value =cell.getDoubleValue();
         return value;
     }

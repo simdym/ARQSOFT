@@ -156,12 +156,11 @@ public class CircularDependenciesTest extends SuperClassForTests {
 
     @Test
     public void test_02_IndirectCircularDependency() throws Exception {
-        //PONER EN TODOS: ES EL VALOR DEL MÉTODO QUE SE PRUEBA
+
         double valorTotal = 6;
-        //PONER EN TODOS: PARA GESTIONAR LOS ERRORES
         AssertionError toThrow = null;
         AssertionError error = null;
-        //PONER EN TODOS: SON LOS PUNTOS ASIGNADOS ANTES DE EJECUTAR ESTE TEST
+
         double puntosAntes = puntosTotales;
         //PONER EN TODOS: UN MENSAJE QUE DIGA QUÉ MÉTODO SE PRUEBA Y
         //QUÉ VALOR TIENE
